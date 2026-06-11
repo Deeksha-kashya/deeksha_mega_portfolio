@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sahelo — Auto Parts E-commerce Redesign. UX/UI case study by Deeksha Kashyap.">
+    <title>Sahelo Case Study | Deeksha Kashyap</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* ── CASE STUDY PAGE STYLES ONLY ──
+           All base colors, nav, header, footer, .project-hero,
+           .case-section, .case-callout, .case-metrics-grid,
+           .project-card come from your existing style.css.
+           Only new case-study components are defined here. */
+
+        /* ── Image placeholder sections ── */
+        .media-block { width: 100%; margin: 2rem 0; }
+
+        .media-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-secondary, #f8f7ff);
+            border: 2px dashed var(--border-color, #e8e6f0);
+            border-radius: var(--radius, 16px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .media-placeholder:hover {
+            border-color: var(--accent-primary, #6c63ff);
+            background: rgba(108,99,255,0.04);
+        }
+        .media-placeholder.tall   { aspect-ratio: 4/3; }
+        .media-placeholder.square { aspect-ratio: 1/1; }
+
+        /* Drop real img/video inside to fill the placeholder */
+        .media-placeholder img,
+        .media-placeholder video {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: calc(var(--radius, 16px) - 2px);
+        }
+
+        .ph-icon {
+            width: 52px; height: 52px;
+            background: var(--bg-card, #fff);
+            border: 1px solid var(--border-color, #e8e6f0);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(108,99,255,0.08);
+        }
+        .ph-icon svg {
+            width: 22px; height: 22px;
+            stroke: var(--accent-primary, #6c63ff);
+            fill: none; stroke-width: 1.5;
+        }
+        .ph-tag {
+            font-size: 0.8rem; font-weight: 500;
+            color: var(--text-muted, #888899);
+            background: var(--bg-card, #fff);
+            padding: 0.3rem 0.85rem;
+            border-radius: 100px;
+            border: 1px solid var(--border-color, #e8e6f0);
+            text-align: center;
+        }
+        .media-caption {
+            font-size: 0.8rem;
+            color: var(--text-muted, #888899);
+            text-align: center;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* ── 2 & 3 col image grids ── */
+        .img-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+        .img-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+
+        /* ── Video section ── */
+        .video-section {
+            background: var(--bg-secondary, #f8f7ff);
+            border: 1px solid var(--border-color, #e8e6f0);
+            border-radius: var(--radius, 16px);
+            padding: 2.5rem;
+            margin: 2rem 0;
+        }
+        .video-section-label {
+            font-size: 0.72rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent-primary, #6c63ff);
+            margin-bottom: 0.4rem;
+        }
+        .video-section-title {
+            font-size: 1.15rem; font-weight: 700;
+            color: var(--text-primary, #1a1a2e);
+            margin-bottom: 1.5rem;
+        }
+        .video-wrap {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-card, #fff);
+            border: 2px dashed var(--border-color, #e8e6f0);
+            border-radius: var(--radius-sm, 10px);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .video-wrap:hover { border-color: var(--accent-primary, #6c63ff); }
+        .video-wrap video,
+        .video-wrap iframe {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            border: none;
+            border-radius: calc(var(--radius-sm, 10px) - 2px);
+        }
+        .video-placeholder-inner {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 1rem; z-index: 1;
+        }
+        .play-btn {
+            width: 68px; height: 68px;
+            background: var(--accent-primary, #6c63ff);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 24px rgba(108,99,255,0.35);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .play-btn:hover { transform: scale(1.08); box-shadow: 0 12px 32px rgba(108,99,255,0.45); }
+        .play-btn svg { width: 26px; height: 26px; fill: #fff; margin-left: 4px; }
+        .video-ph-text {
+            font-size: 0.875rem;
+            color: var(--text-muted, #888899);
+            text-align: center; line-height: 1.6;
+        }
+
+        /* ── Steps / User flow ── */
+        .steps {
+            display: flex; flex-direction: column;
+            border: 1px solid var(--border-color, #e8e6f0);
+            border-radius: var(--radius, 16px);
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+        .step {
+            display: flex; align-items: flex-start; gap: 1.25rem;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color, #e8e6f0);
+            background: var(--bg-card, #151c31);
+            transition: background 0.3s;
+        }
+        .step:last-child { border-bottom: none; }
+        .step:hover { background: var(--bg-secondary, #f8f7ff); }
+        .step-num {
+            width: 32px; height: 32px;
+            background: rgba(108,99,255,0.1);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 700;
+            color: var(--accent-primary, #6c63ff);
+            flex-shrink: 0;
+        }
+        .step-body {
+            font-size: 0.975rem;
+            color: var(--text-secondary, #4a4a6a);
+            line-height: 1.7;
+        }
+        .step-body strong { color: var(--text-primary, #1a1a2e); font-weight: 600; }
+
+        /* ── Skills / learnings 2-col ── */
+        .learnings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+        .learning-card {
+            background: var(--bg-secondary, #f8f7ff);
+            border: 1px solid var(--border-color, #e8e6f0);
+            border-radius: var(--radius, 16px);
+            padding: 1.5rem;
+        }
+        .learning-card-label {
+            font-size: 0.72rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent-primary, #6c63ff);
+            margin-bottom: 0.85rem;
+        }
+        .learning-card ul {
+            list-style: none;
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .learning-card ul li {
+            font-size: 0.9rem;
+            color: var(--text-secondary, #4a4a6a);
+            line-height: 1.6;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+        .learning-card ul li::before {
+            content: '';
+            position: absolute; left: 0; top: 0.6em;
+            width: 5px; height: 5px;
+            background: var(--accent-primary, #6c63ff);
+            border-radius: 50%;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 680px) {
+            .img-grid-2, .img-grid-3, .learnings-grid { grid-template-columns: 1fr; }
+            .video-section { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                deeksha.kashyap <span class="logo-dot"></span>
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="../about.html" class="nav-link">About</a>
+                <a href="../index.html#projects" class="nav-link">Projects</a>
+                <a href="../writings.html" class="nav-link">Writings</a>
+                <a href="../resume.html" class="nav-link">Resume</a>
+            </nav>
+            <div class="nav-right">
+                <button class="theme-btn" id="theme-toggle" aria-label="Toggle Light/Dark Theme">
+                    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393.007a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3zm0 2a7 7 0 1 0 5.25 11.625 9.5 9.5 0 0 1-5.18-7.79 9.516 9.516 0 0 1-.07-1.835A6.97 6.97 0 0 0 12 5z"/></svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.122 2.122-1.414 1.414-2.122-2.122zM19.07 3.515l1.414 1.414-2.122 2.121-1.414-1.414 2.122-2.121zM5.636 16.95l1.414 1.414-2.122 2.122-1.414-1.414 2.122-2.122zM1 11h3v2H1v-2zm19 0h3v2h-3v-2z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ══ PROJECT HERO ══════════════════════════════════════════ -->
+        <section class="project-hero">
+            <div class="container reveal">
+                <span class="section-label">UX/UI &amp; E-commerce Redesign</span>
+                <h1 class="section-title" style="font-size:3.5rem; line-height:1.1;">
+                    Sahelo — Auto Parts E-commerce Redesign
+                </h1>
+                <p class="section-desc" style="max-width:800px; font-size:1.25rem;">
+                    Redesigning an auto-parts e-commerce platform to improve usability, trust, and
+                    product discovery across a complex automotive catalog — for new and second-hand parts.
+                </p>
+                <div class="project-hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Role</span>
+                        <span class="meta-value">UX/UI Design</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Industry</span>
+                        <span class="meta-value">Automobile</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Duration</span>
+                        <span class="meta-value">10 Weeks</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Conversion Rate</span>
+                        <span class="meta-value">3.4%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ HERO IMAGE ════════════════════════════════════════════ -->
+        <div class="container reveal" style="padding-top:3rem;">
+            <div class="media-block">
+                <!--
+                ╔══════════════════════════════════════════════════════╗
+                ║  HERO IMAGE                                          ║
+                ║  <img src="images/sahelo-hero.jpg"                   ║
+                ║       alt="Sahelo platform overview">                ║
+                ╚══════════════════════════════════════════════════════╝
+                -->
+                <div class="media-placeholder">
+                    <div class="ph-icon">
+                        <img src="../images/sahelo_hero_section.png" alt="Sahelo platform overview">
+                    </div>
+                </div>
+                <p class="media-caption">Sahelo — redesigned homepage, desktop view</p>
+            </div>
+        </div>
+
+        <!-- ══ CASE BODY ══════════════════════════════════════════════ -->
+        <div class="project-body container">
+
+            <!-- Introduction -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Introduction</h2>
+                <p class="case-text">
+                    Sahelo is an auto-parts e-commerce platform where users can purchase both
+                    <strong>new and second-hand car parts</strong>. The project focused on redesigning the platform
+                    to improve usability, trust, and product discovery across a complex automotive catalog.
+                </p>
+
+                <!-- Context photo -->
+                <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  CONTEXT PHOTO                                       ║
+                    ║  <img src="images/sahelo-context.jpg"               ║
+                    ║       alt="Context photo">                           ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                    <div class="media-placeholder tall">
+                        <div class="ph-icon">
+                            <img src="../images/sahelo_home.png" alt="Context photo">
+                        </div>
+                        <span class="ph-tag">📸 Context Photo — phone / platform real-world usage</span>
+                    </div>
+                    <p class="media-caption">Real-world context — Sahelo on mobile</p>
+                </div>
+            </section>
+
+            <!-- Problem -->
+            <section class="case-section reveal">
+                <h2 class="case-title">The Problem</h2>
+                <p class="case-text">
+                    The existing platform had major usability and trust issues that were directly hurting
+                    conversions and user confidence:
+                </p>
+                <ul class="case-list">
+                    <li>No <strong>clear search system</strong> for finding parts — limited to basic keyword only</li>
+                    <li>No <strong>VIN, engine code, or OEM input</strong> support</li>
+                    <li>Poor <strong>category visibility</strong> — users didn't understand what products were available</li>
+                    <li>No <strong>alternative product suggestions</strong> when exact parts were unavailable</li>
+                    <li>Broken pages and <strong>dead links</strong> directly affecting user flow and conversions</li>
+                    <li>Filters not aligned with real user search goals</li>
+                    <li>Lack of <strong>trust signals</strong> — no delivery clarity, pricing transparency, or tax info</li>
+                    <li>Checkout flow <strong>unclear and error-prone</strong> — leading to abandoned orders</li>
+                </ul>
+
+                <div class="case-callout">
+                    <h3 class="case-callout-title">Core Issue</h3>
+                    <p class="case-callout-text">
+                        The experience felt <strong>unstructured, unreliable, and difficult to use</strong> —
+                        failing users at every critical touchpoint from search to checkout.
+                    </p>
+                </div>
+
+                <!-- Before state screenshot -->
+                <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  BEFORE STATE / OLD UI SCREENSHOT                   ║
+                    ║  <img src="images/sahelo-before.jpg"                ║
+                    ║       alt="Old platform UI">                         ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                    <div class="media-placeholder tall">
+                        <div class="ph-icon">
+                            <img src="../images/sahelo_old_ui.png" alt="Old platform UI">
+                        </div>
+                    </div>
+                    <p class="media-caption">Existing Sahelo UI — unstructured, unreliable experience</p>
+                </div>
+
+                <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  BEFORE STATE / OLD UI SCREENSHOT                   ║
+                    ║  <img src="images/sahelo-before.jpg"                ║
+                    ║       alt="Old platform UI">                         ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                    <div class="media-placeholder tall">
+                        <div class="ph-icon">
+                            <img src="../images/sahelo_old_UI_2.png" alt="Old platform UI">
+                        </div>
+                    </div>
+                    <p class="media-caption">Existing Sahelo UI — unstructured, unreliable experience</p>
+                </div>
+            </section>
+
+            <!-- Research & Insights -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Research &amp; Insights</h2>
+                <p class="case-text"><strong>Methods used:</strong></p>
+                <ul class="case-list">
+                    <li>User behavior analysis using <strong>Google Analytics 4</strong></li>
+                    <li>Drop-off and session tracking</li>
+                    <li>Stakeholder discussions for business context</li>
+                    <li>Competitor benchmarking across 5+ auto-parts platforms</li>
+                    <li>Review of past internal data and sales patterns</li>
+                </ul>
+
+                <div class="case-callout" style="border-left-color: var(--accent-secondary);">
+                    <h3 class="case-callout-title" style="color: var(--accent-secondary);">Key Findings</h3>
+                    <p class="case-callout-text">
+                        <strong>1.</strong> Users dropped off mainly at <strong>search and category pages</strong> — the two most critical flows.<br><br>
+                        <strong>2.</strong> High cognitive load due to unclear navigation and unstructured product listing.<br><br>
+                        <strong>3.</strong> Users wanted <strong>multiple ways to search</strong> — not just one keyword field.<br><br>
+                        <strong>4.</strong> Trust issues came from missing delivery timelines, tax info, and unclear pricing.<br><br>
+                        <strong>5.</strong> Broken links directly impacted conversions — users hit dead ends and left.<br><br>
+                        <strong>6.</strong> Marketing campaigns were less effective due to a poor landing experience.
+                    </p>
+                </div>
+
+                <!-- Research artifact -->
+                <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  RESEARCH ARTIFACT                                   ║
+                    ║  <img src="images/sahelo-research.jpg"              ║
+                    ║       alt="Research findings">                       ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                    <div class="media-placeholder">
+                        <div class="ph-icon">
+                            <img src="../images/sahelo_Research & Insights.png" alt="Research findings">
+                        </div>
+                        <span class="ph-tag">📸 Research Artifact — GA4 drop-off report / competitor analysis board</span>
+                    </div>
+                    <p class="media-caption">Drop-off analysis — search and category pages were the biggest pain points</p>
+                </div>
+            </section>
+
+            <!-- Solution -->
+            <section class="case-section reveal">
+                <h2 class="case-title">The Solution</h2>
+                <p class="case-text">
+                    A <strong>structured, search-first e-commerce experience</strong> focused on clarity,
+                    trust, and guided navigation — eliminating every known friction point.
+                </p>
+                <ul class="case-list">
+                    <li>Introduced <strong>multi-input search system</strong> (VIN, OEM, engine code, model)</li>
+                    <li>Simplified and restructured <strong>category navigation</strong></li>
+                    <li>Improved product discovery with <strong>"You may also like"</strong> alternatives</li>
+                    <li>Fixed broken flows — <strong>zero dead links</strong> in final design</li>
+                    <li>Built trust through <strong>transparent delivery, pricing, and tax information</strong></li>
+                    <li>Aligned filters with <strong>real user search behavior</strong></li>
+                    <li>Added <strong>GDPR compliance</strong> for European users</li>
+                    <li>Redesigned <strong>checkout flow</strong> — clear, step-by-step, error-free</li>
+                </ul>
+
+                <!-- Solution overview image -->
+                <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  SOLUTION OVERVIEW / REDESIGN OVERVIEW              ║
+                    ║  <img src="images/sahelo-solution.jpg"              ║
+                    ║       alt="Redesign overview">                       ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                    <div class="media-placeholder">
+                        <div class="ph-icon">
+                            <img src="../images/sahelo_The Solution.png" alt="Redesign overview">
+                        </div>
+                        <span class="ph-tag">📸 Redesign Overview — wide platform view or key screens montage</span>
+                    </div>
+                    <p class="media-caption">Sahelo redesign — structured, search-first e-commerce experience</p>
+                </div>
+            </section>
+
+            <!-- Core Features -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Core Features</h2>
+                <ul class="case-list">
+                    <li><strong>Multi-search functionality:</strong> VIN, OEM, engine code, gearbox code, car model + global search</li>
+                    <li><strong>Improved category visibility:</strong> Clear product grouping and navigation</li>
+                    <li><strong>Alternative suggestions:</strong> "You may also like" and compatible products</li>
+                    <li><strong>Dead link resolution:</strong> Clean, error-free navigation throughout</li>
+                    <li><strong>Product validation cues:</strong> Indicators to verify compatibility before purchase</li>
+                    <li><strong>Gutachten upload support:</strong> For validated automotive parts (European compliance)</li>
+                    <li><strong>Seller login / registration:</strong> Based on client requirements</li>
+                    <li><strong>Improved filters:</strong> Aligned with real user search behavior</li>
+                    <li><strong>Clear delivery &amp; pricing info:</strong> Including tax and delivery timelines</li>
+                    <li><strong>GDPR compliance:</strong> For European users</li>
+                    <li><strong>Trust signals:</strong> Footer navigation, contact details, structured layout</li>
+                </ul>
+
+                <!-- Feature screens 2-col -->
+               
+            </section>
+
+            <!-- User Flow -->
+            <section class="case-section reveal">
+                <h2 class="case-title">User Flow (Simplified)</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-body">User enters search — <strong>VIN / model / engine code / OEM / global keyword</strong></div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-body">System shows <strong>structured, filtered results</strong> aligned with vehicle</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-body">User applies <strong>filters or explores categories</strong> to narrow down</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-body">Product page shows <strong>compatibility cues + alternative suggestions</strong></div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">5</div>
+                        <div class="step-body">User proceeds to <strong>checkout with clear delivery info, pricing, and tax</strong></div>
+                    </div>
+                </div>
+
+                <!-- Flow diagram -->
+                <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  USER FLOW DIAGRAM — Export from Figma               ║
+                    ║  <img src="images/sahelo-user-flow.jpg"             ║
+                    ║       alt="User flow diagram">                       ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                    <div class="media-placeholder">
+                        <div class="ph-icon">
+                            <image src="../images/sahelo+user_flow.png" alt="User flow diagram" width= 100%; >
+                        </div>
+                        <span class="ph-tag">📸 User Flow Diagram — Export from Figma · Wide format</span>
+                    </div>
+                    <p class="media-caption">End-to-end redesigned user flow — search to checkout</p>
+                </div>
+            </section>
+
+            <!-- Design Decisions -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Design Decisions</h2>
+                <ul class="case-list">
+                    <li><strong>Search-first approach</strong> → matches real user intent — most users know what they need, not how to find it</li>
+                    <li><strong>Multi-input system</strong> → supports different user knowledge levels (expert vs first-time buyer)</li>
+                    <li><strong>Clear categories</strong> → reduces confusion and cognitive load on first landing</li>
+                    <li><strong>Alternative suggestions</strong> → avoids dead-end journeys and keeps users engaged</li>
+                    <li><strong>Trust-focused UI</strong> → delivery timelines, tax clarity, and trust signals improve conversions</li>
+                    <li><strong>Error-free navigation</strong> → no broken links, no dead pages — ensures smooth flow</li>
+                    <li><strong>Data-driven redesign</strong> → every decision grounded in actual GA4 drop-off points</li>
+                </ul>
+
+                <!-- Before / After comparison -->
+                <div class="img-grid-1" style="margin-top:1.75rem;">
+                    <div>
+                        <!--
+                        ╔══════════════════════════════════════════╗
+                        ║  BEFORE SCREEN                           ║
+                        ║  <img src="images/before-screen.jpg"    ║
+                        ║       alt="Before redesign">            ║
+                        ╚══════════════════════════════════════════╝
+                        -->
+                        <div class="media-placeholder tall">
+                            <img src="../images/sahelo_before_after.png" alt="Before redesign">
+                        </div>
+                        <p class="media-caption">Before — unstructured, unclear experience</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIDEO SECTION -->
+           <!-- <section class="case-section reveal">
+                <h2 class="case-title">Prototype Walkthrough</h2>
+                <div class="video-section">
+                    <div class="video-section-label">Video</div>
+                    <div class="video-section-title">See the redesigned flow in motion</div>
+                    <!--
+                    ╔══════════════════════════════════════════════════════════════╗
+                    ║  VIDEO — Uncomment ONE option below:                        ║
+                    ║                                                              ║
+                    ║  OPTION A · Local MP4:                                      ║
+                    ║  <video controls poster="images/video-thumb.jpg">           ║
+                    ║    <source src="video/sahelo-walkthrough.mp4"               ║
+                    ║            type="video/mp4">                                ║
+                    ║  </video>                                                    ║
+                    ║                                                              ║
+                    ║  OPTION B · YouTube:                                        ║
+                    ║  <iframe                                                     ║
+                    ║    src="https://www.youtube.com/embed/YOUR_VIDEO_ID"        ║
+                    ║    allowfullscreen title="Sahelo walkthrough">              ║
+                    ║  </iframe>                                                   ║
+                    ║                                                              ║
+                    ║  OPTION C · Loom:                                           ║
+                    ║  <iframe                                                     ║
+                    ║    src="https://www.loom.com/embed/YOUR_LOOM_ID"            ║
+                    ║    allowfullscreen title="Sahelo walkthrough">              ║
+                    ║  </iframe>                                                   ║
+                    ╚══════════════════════════════════════════════════════════════╝
+                    -->
+                   <!-- <div class="video-wrap">
+                        <div class="video-placeholder-inner">
+                            <div class="play-btn">
+                                <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+                            </div>
+                            <div class="video-ph-text">
+                                🎬 Add prototype video here<br>
+                                <span style="font-size:0.75rem;opacity:0.7;">Local MP4 · YouTube · Loom — see comment above</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Impact -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Impact (6 Months)</h2>
+                <p class="case-text"><strong>Performance Metrics:</strong></p>
+                <div class="case-metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-number">+22%</div>
+                        <div class="metric-label">Increase in Search Interaction</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-number">+7%</div>
+                        <div class="metric-label">Increase in User Sessions</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-number">3.4%</div>
+                        <div class="metric-label">Conversion Rate Achieved</div>
+                    </div>
+                </div>
+
+                <div class="case-callout" style="margin-top:1.5rem;">
+                    <h3 class="case-callout-title">What Changed</h3>
+                    <p class="case-callout-text">
+                        <strong>↑ Product discoverability</strong> — users find the right parts faster with multi-input search.<br>
+                        <strong>↓ Drop-offs</strong> — reduced abandonment in search and category flows.<br>
+                        <strong>↑ User trust</strong> — transparent information improved confidence at checkout.<br>
+                        <strong>↑ Marketing effectiveness</strong> — better landing experience increased campaign ROI.
+                    </p>
+                </div>
+
+                <!-- Analytics screenshot -->
+                <!-- <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  ANALYTICS / IMPACT SCREENSHOT                       ║
+                    ║  <img src="images/sahelo-analytics.jpg"             ║
+                    ║       alt="GA4 impact metrics">                      ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                   <!--  <div class="media-placeholder">
+                        <span class="ph-tag">📸 GA4 Analytics Screenshot — +22% search interaction / 3.4% conversion</span>
+                    </div>
+                    <p class="media-caption">GA4 performance — 6-month post-redesign metrics</p>
+                </div> -->
+            </section>
+
+            <!-- Learnings -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Learnings</h2>
+                <div class="learnings-grid">
+                    <div class="learning-card">
+                        <div class="learning-card-label">Technical Skills</div>
+                        <ul>
+                            <li>User behavior tracking with Google Analytics 4</li>
+                            <li>Understanding user journeys and drop-off analysis</li>
+                            <li>Basics of API flow and debugging via browser inspect</li>
+                            <li>Data-driven design improvements</li>
+                        </ul>
+                    </div>
+                    <div class="learning-card">
+                        <div class="learning-card-label">Product &amp; UX Thinking</div>
+                        <ul>
+                            <li>Designing for complex e-commerce systems</li>
+                            <li>Reducing cognitive load through structure and clarity</li>
+                            <li>Aligning filters and navigation with real user intent</li>
+                        </ul>
+                    </div>
+                    <div class="learning-card">
+                        <div class="learning-card-label">Soft Skills</div>
+                        <ul>
+                            <li>Stakeholder communication and requirement alignment</li>
+                            <li>Asking the right product and business questions</li>
+                            <li>Collaborating with developers on feasibility</li>
+                            <li>Understanding marketing impact on product experience</li>
+                        </ul>
+                    </div>
+                    <div class="learning-card">
+                        <div class="learning-card-label">Biggest Takeaway</div>
+                        <ul>
+                            <li>Designing for trust is as important as designing for usability</li>
+                            <li>Data is the best argument for any design decision</li>
+                            <li>Broken UX isn't just a design problem — it's a business problem</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+        <!-- /project-body -->
+
+
+        <!-- ══ OTHER PROJECTS ════════════════════════════════════════ -->
+        <section class="other-projects-section">
+            <div class="container reveal">
+                <div class="section-header" style="margin-bottom:3rem;">
+                    <span class="section-label">Other Projects</span>
+                    <h2 class="section-title" style="font-size:2.2rem;">Keep Exploring</h2>
+                </div>
+                <div class="works-grid" style="grid-template-columns:1fr;">
+                    <div class="project-card" style="flex-direction:row; align-items:center; min-height:180px;">
+                        <div class="project-content" style="padding:2.5rem;">
+                            <span class="project-meta">Related Case Study</span>
+                            <h3 class="project-title" style="margin:0.5rem 0;">Data Dashboard UX Optimization</h3>
+                            <p class="project-desc">Standardizing UI patterns, simplifying heavy data layouts, and integrating invoice flows. Reduced core task completion times by 50%.</p>
+                            <a href="dashboard.html" class="project-link" style="margin-top:1rem;">
+                                View Data Dashboard Project
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ══ FOOTER ════════════════════════════════════════════════════ -->
+    <footer>
+        <div class="container footer-content">
+            <p>© 2026 Deeksha Kashyap. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/deeksha-kashyap-ux" target="_blank" rel="noopener noreferrer" class="social-link">LinkedIn</a>
+                <a href="mailto:deekshakashyap224@gmail.com" class="social-link">Email</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

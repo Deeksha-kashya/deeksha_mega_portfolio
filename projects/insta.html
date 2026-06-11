@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Instagram UX Case Study — Redesigning for Intentional Use. Speculative UX Research & Product Design by Deeksha Kashyap.">
+    <title>Instagram UX Case Study | Deeksha Kashyap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ── CSS SYSTEM (from styles.css) ── */
+        :root {
+            --bg-primary: #07090e;
+            --bg-secondary: #0d111d;
+            --card-bg: rgba(17, 22, 34, 0.6);
+            --card-hover: rgba(22, 30, 49, 0.8);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(99, 102, 241, 0.3);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+            --accent-gradient-hover: linear-gradient(135deg, #4f46e5, #7c3aed);
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --success: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.1);
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --max-width: 1200px;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: all 0.2s ease;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.15), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+
+        
+        .light-theme {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --card-bg: rgba(255,255,255,0.7);
+            --card-hover: rgba(255,255,255,0.95);
+            --border-color: rgba(0,0,0,0.08);
+            --border-hover: rgba(79,70,229,0.3);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --accent-primary: #4f46e5;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #4f46e5, #7c3aed);
+            --accent-gradient-hover: linear-gradient(135deg, #3730a3, #6d28d9);
+            --accent-glow: rgba(79,70,229,0.08);
+            --success-bg: rgba(16,185,129,0.15);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+        a { color: inherit; text-decoration: none; transition: var(--transition-fast); }
+        img { max-width: 100%; height: auto; display: block; }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 5px; border: 2px solid var(--bg-primary); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
+
+        /* ── LAYOUT ── */
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+
+        /* ── REVEAL ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ── CUSTOM CURSOR ── */
+        .custom-cursor {
+            width: 20px; height: 20px;
+            border: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%,-50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        .custom-cursor-dot {
+            width: 4px; height: 4px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%,-50%);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ─────────────────────────────────────────
+           HEADER / NAV  — exact match to styles.css
+           ───────────────────────────────────────── */
+
+        /* header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(7, 9, 14, 0.7);   /* styles.css: rgba(var(--bg-primary),0.7) */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+        .light-theme header {
+            background: rgba(248, 250, 252, 0.7);
+        }
+
+        /* .nav-container — height: 5rem  (styles.css line ~112) */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 5rem;                       /* exact from styles.css */
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* .logo — font-family Outfit, weight 800, size 1.5rem, letter-spacing -0.03em  (styles.css ~120) */
+        .logo {
+            font-family: var(--font-heading);   /* 'Outfit', sans-serif */
+            font-weight: 800;
+            font-size: 1.5rem;                  /* exact from styles.css */
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+        }
+        .logo:hover { color: var(--text-primary); opacity: 0.85; }
+
+        /* .logo-dot — 8×8 px, accent-gradient, border-radius 50%  (styles.css ~127) */
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-gradient); /* linear-gradient(135deg,#6366f1,#8b5cf6) */
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* .nav-menu — flex, gap 2.5rem, list-style none  (styles.css ~133) */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        /* .nav-link — weight 500, size 0.95rem, color text-secondary, padding 0.5rem 0  (styles.css ~139) */
+        .nav-link {
+            font-family: var(--font-body);      /* 'Inter', sans-serif */
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            position: relative;
+            padding: 0.5rem 0;
+            transition: var(--transition-fast);
+        }
+        .nav-link:hover,
+        .nav-link.active { color: var(--text-primary); }
+
+        /* underline slide-in on hover — height 2px, accent-gradient  (styles.css ~148) */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: var(--transition-smooth);
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after { width: 100%; }
+
+        /* .nav-right — flex, gap 1.5rem  (styles.css ~160) */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* .theme-btn — 2.5rem × 2.5rem circle, border 1px border-color  (styles.css ~164) */
+        .theme-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 2.5rem;                      /* exact from styles.css */
+            height: 2.5rem;                     /* exact from styles.css */
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+        }
+        .theme-btn:hover {
+            border-color: var(--accent-primary);
+            background: var(--accent-glow);
+            transform: scale(1.05);             /* styles.css ~173 */
+        }
+
+        /* theme-btn svg — 1.2rem × 1.2rem  (styles.css ~177) */
+        .theme-btn svg {
+            width: 1.2rem;                      /* exact from styles.css */
+            height: 1.2rem;
+            fill: currentColor;
+        }
+
+        /* moon / sun icon swap  (styles.css ~179-184) */
+        .moon-icon { display: block; }
+        .sun-icon  { display: none;  }
+        .light-theme .moon-icon { display: none;  }
+        .light-theme .sun-icon  { display: block; }
+
+        /* .hamburger — hidden desktop, flex mobile  (styles.css ~187) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            z-index: 1100;
+            padding: 0.5rem;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: var(--transition-fast);
+        }
+        /* hamburger → X animation  (styles.css ~197) */
+        .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Mobile nav — slides in from right (styles.css ~200-215) */
+        .nav-menu.mobile-open {
+            right: 0;
+        }
+
+        /* ── HERO ── */
+        .project-hero {
+            padding: 9rem 0 5rem;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-glow {
+            position: absolute; top: 0; left: 50%;
+            transform: translate(-50%, -30%);
+            width: 50rem; height: 30rem;
+            background: radial-gradient(ellipse, rgba(99,102,241,0.12) 0%, transparent 70%);
+            pointer-events: none; z-index: 0;
+        }
+        .project-hero .container { position: relative; z-index: 1; }
+
+        /* Section label */
+        .section-label {
+            font-family: var(--font-heading);
+            text-transform: uppercase; font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 0.1em; color: var(--accent-primary);
+            margin-bottom: 0.75rem; display: block;
+        }
+
+        /* Hero title */
+        .hero-title {
+            font-family: var(--font-heading);
+            font-weight: 800; font-size: 3.4rem; line-height: 1.1;
+            letter-spacing: -0.03em; margin-bottom: 1.25rem;
+        }
+
+        .text-gradient {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text; background-clip: text; 
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem; color: var(--text-secondary);
+            max-width: 720px; line-height: 1.75; margin-bottom: 2rem;
+        }
+
+        /* Stat pills */
+        .stat-pills { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2.5rem; }
+        .stat-pill {
+            display: flex; align-items: center; gap: 0.6rem;
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 100px; padding: 0.5rem 1.2rem;
+            backdrop-filter: blur(8px);
+            transition: var(--transition-smooth);
+        }
+        .stat-pill:hover { border-color: var(--border-hover); }
+        .stat-pill-num {
+            font-family: var(--font-heading); font-size: 1rem; font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text; background-clip: text;  -webkit-text-fill-color: transparent;
+        }
+        .stat-pill-label { font-size: 0.82rem; color: var(--text-secondary); font-weight: 500; }
+
+        /* Meta grid */
+        .project-hero-meta {
+            display: grid; grid-template-columns: repeat(5, 1fr);
+            gap: 0; margin-top: 2.5rem;
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 0.75rem; padding: 1.5rem 2rem;
+            backdrop-filter: blur(8px);
+        }
+        .meta-item {
+            display: flex; flex-direction: column; gap: 0.3rem;
+            padding-right: 1.5rem; border-right: 1px solid var(--border-color);
+        }
+        .meta-item:last-child { border-right: none; padding-right: 0; padding-left: 1.5rem; }
+        .meta-item:first-child { padding-left: 0; }
+        .meta-item:not(:first-child):not(:last-child) { padding-left: 1.5rem; }
+        .meta-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+        .meta-value { font-weight: 600; color: var(--text-primary); font-size: 0.9rem; }
+
+        /* ── HERO VISUAL ── */
+        .hero-visual {
+            margin: 3rem 0 0;
+        }
+        .media-placeholder {
+            width: 100%; aspect-ratio: 16/9;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 0.75rem; position: relative;
+            transition: border-color 0.3s;
+        }
+        .media-placeholder:hover { border-color: var(--border-hover); }
+        .media-placeholder.tall { aspect-ratio: 4/3; }
+        .media-placeholder.sq { aspect-ratio: 1/1; }
+        .ph-icon {
+            width: 52px; height: 52px;
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+        .ph-icon svg { width: 22px; height: 22px; stroke: var(--accent-primary); fill: none; stroke-width: 1.5; }
+        .ph-tag {
+            font-size: 0.8rem; font-weight: 500; color: var(--text-muted);
+            background: var(--card-bg); padding: 0.3rem 0.9rem;
+            border-radius: 100px; border: 1px solid var(--border-color);
+        }
+        .media-caption {
+            font-size: 0.8rem; color: var(--text-muted);
+            text-align: center; margin-top: 0.5rem; font-style: italic;
+        }
+
+        /* ── BODY LAYOUT ── */
+        .project-body { padding: 5rem 0; }
+        .case-section { margin-bottom: 5rem; }
+
+        /* Section titles */
+        .case-title {
+            font-family: var(--font-heading);
+            font-size: 1.75rem; font-weight: 700;
+            color: var(--text-primary); margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex; flex-direction: column; gap: 0.25rem;
+        }
+        .num-label {
+            font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--accent-primary);
+        }
+
+        .case-text {
+            font-size: 1.02rem; color: var(--text-secondary);
+            line-height: 1.8; margin-bottom: 1.25rem;
+        }
+        .case-text strong { color: var(--text-primary); font-weight: 600; }
+
+        .case-list {
+            list-style: none; display: flex; flex-direction: column;
+            gap: 0.85rem; margin: 1.25rem 0;
+        }
+        .case-list li {
+            font-size: 0.975rem; color: var(--text-secondary);
+            line-height: 1.7; padding-left: 1.5rem; position: relative;
+        }
+        .case-list li::before {
+            content: '→'; position: absolute; left: 0;
+            color: var(--accent-primary); font-weight: 700;
+        }
+        .case-list li strong { color: var(--text-primary); font-weight: 600; }
+
+        /* Callouts */
+        .case-callout {
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 0 0.5rem 0.5rem 0;
+            padding: 1.5rem 1.75rem; margin: 1.5rem 0;
+            backdrop-filter: blur(8px);
+        }
+        .case-callout.warn { border-left-color: #f59e0b; background: rgba(245,158,11,0.05); }
+        .case-callout.secondary { border-left-color: var(--accent-secondary); }
+        .case-callout-title {
+            font-size: 0.78rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent-primary); margin-bottom: 0.6rem;
+        }
+        .case-callout.warn .case-callout-title { color: #f59e0b; }
+        .case-callout.secondary .case-callout-title { color: var(--accent-secondary); }
+        .case-callout-text {
+            font-size: 0.975rem; color: var(--text-secondary); line-height: 1.8;
+        }
+        .case-callout-text strong { color: var(--text-primary); font-weight: 600; }
+        .case-callout-text em { font-style: italic; }
+
+        /* Source chip */
+        .source-chip {
+            display: inline-block; font-size: 0.7rem; font-weight: 600;
+            background: var(--accent-glow); color: var(--accent-primary);
+            border: 1px solid var(--border-hover); border-radius: 100px;
+            padding: 0.18rem 0.65rem; margin-left: 0.4rem; vertical-align: middle;
+        }
+
+        /* Insight cards */
+        .insight-grid { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+        .insight-card {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 0.75rem; padding: 1.25rem 1.5rem;
+            display: flex; gap: 1rem; align-items: flex-start;
+            backdrop-filter: blur(8px); transition: var(--transition-smooth);
+        }
+        .insight-card:hover { border-color: var(--border-hover); transform: translateX(4px); }
+        .insight-num {
+            font-size: 0.75rem; font-weight: 700; color: var(--accent-primary);
+            background: var(--accent-glow); border-radius: 100px;
+            padding: 0.25rem 0.65rem; white-space: nowrap; margin-top: 0.1rem; flex-shrink: 0;
+        }
+        .insight-body { font-size: 0.975rem; color: var(--text-secondary); line-height: 1.7; }
+        .insight-body strong { color: var(--text-primary); font-weight: 600; }
+
+        /* Steps */
+        .steps {
+            display: flex; flex-direction: column;
+            border: 1px solid var(--border-color); border-radius: 0.75rem;
+            overflow: hidden; margin: 1.5rem 0;
+        }
+        .step {
+            display: flex; align-items: flex-start; gap: 1.25rem;
+            padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-color);
+            background: var(--card-bg); transition: var(--transition-smooth);
+        }
+        .step:last-child { border-bottom: none; }
+        .step:hover { background: var(--card-hover); }
+        .step-num {
+            width: 32px; height: 32px; flex-shrink: 0;
+            background: var(--accent-glow); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 700; color: var(--accent-primary);
+        }
+        .step-body { font-size: 0.975rem; color: var(--text-secondary); line-height: 1.7; }
+        .step-body strong { color: var(--text-primary); font-weight: 600; }
+
+        /* AI Step Cards */
+        .ai-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 1.5rem 0; }
+        .ai-step-card {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 0.75rem; padding: 1.5rem;
+            backdrop-filter: blur(8px); transition: var(--transition-smooth);
+        }
+        .ai-step-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+        .ai-step-num {
+            font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800;
+            background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; opacity: 0.35; margin-bottom: 0.5rem;
+        }
+        .ai-step-title { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem; }
+        .ai-step-desc { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.65; }
+
+        /* Direction cards */
+        .direction-group { margin: 2rem 0; }
+        .direction-group-label {
+            font-size: 0.88rem; font-weight: 600; color: var(--text-primary);
+            margin-bottom: 0.85rem; text-transform: uppercase;
+            letter-spacing: 0.05em; font-family: var(--font-heading);
+        }
+        .direction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+        .direction-card {
+            border-radius: 0.75rem; padding: 1.25rem 1.5rem;
+            transition: var(--transition-smooth);
+        }
+        .direction-card.rejected {
+            background: rgba(239,68,68,0.05);
+            border: 1px solid rgba(239,68,68,0.15);
+        }
+        .direction-card.chosen {
+            background: rgba(16,185,129,0.05);
+            border: 1px solid rgba(16,185,129,0.2);
+        }
+        .direction-card:hover { transform: translateY(-2px); }
+        .direction-badge {
+            font-size: 0.72rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;
+        }
+        .direction-card.rejected .direction-badge { color: #ef4444; }
+        .direction-card.chosen .direction-badge { color: #10b981; }
+        .direction-title { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .direction-desc { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.65; }
+
+        /* Card states */
+        .card-states { display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0; }
+        .card-state {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 0.75rem; padding: 1rem 1.5rem;
+            display: flex; gap: 1rem; align-items: flex-start;
+            transition: var(--transition-smooth);
+        }
+        .card-state:hover { border-color: var(--border-hover); }
+        .card-state-label {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; padding: 0.25rem 0.65rem;
+            border-radius: 100px; white-space: nowrap; margin-top: 0.1rem; flex-shrink: 0;
+        }
+        .card-state-label.watched { background: rgba(37,99,235,0.15); color: #60a5fa; }
+        .card-state-label.watching { background: rgba(180,83,9,0.2); color: #fcd34d; }
+        .card-state-label.unwatched { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+        .card-state-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.65; }
+
+        /* Metrics grid */
+        .case-metrics-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin: 2rem 0; }
+        .metric-card {
+            background: var(--bg-secondary); border: 1px solid var(--border-color);
+            border-radius: 0.75rem; padding: 2rem 1.5rem; text-align: center;
+            transition: var(--transition-smooth);
+        }
+        .metric-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+        .metric-number {
+            font-family: var(--font-heading); font-size: 2.5rem; font-weight: 800;
+            background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; 
+            -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 0.5rem;
+        }
+        .metric-label { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+        /* Image grids */
+        .img-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 1.5rem 0; }
+        .img-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin: 1.5rem 0; }
+
+        /* Closing callout */
+        .closing-callout {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem; padding: 3rem;
+            text-align: center; margin: 3rem 0;
+            position: relative; overflow: hidden;
+            backdrop-filter: blur(8px);
+        }
+        .closing-callout::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at center top, rgba(99,102,241,0.1), transparent 65%);
+            pointer-events: none;
+        }
+        .closing-callout p {
+            font-family: var(--font-heading);
+            font-size: 1.4rem; font-weight: 700;
+            color: var(--text-primary); line-height: 1.6;
+            max-width: 700px; margin: 0 auto 0.75rem;
+            position: relative;
+        }
+        .closing-sub {
+            font-size: 0.85rem; color: var(--text-muted);
+            font-style: italic; position: relative;
+        }
+
+        /* Other projects */
+        .other-projects-section {
+            border-top: 1px solid var(--border-color);
+            padding: 5rem 0;
+            background: var(--bg-secondary);
+        }
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2rem; font-weight: 800; letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+        .project-card {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 1rem; overflow: hidden; display: flex;
+            transition: var(--transition-smooth); backdrop-filter: blur(8px);
+        }
+        .project-card:hover { transform: translateY(-4px); border-color: var(--border-hover); box-shadow: var(--shadow-lg); }
+        .project-content { padding: 2.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+        .project-meta {
+            font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--accent-primary);
+        }
+        .project-title {
+            font-family: var(--font-heading); font-size: 1.4rem;
+            font-weight: 700; color: var(--text-primary);
+        }
+        .project-desc { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
+        .project-link {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            font-size: 0.9rem; font-weight: 600; color: var(--accent-primary);
+            margin-top: 0.5rem; width: fit-content;
+            transition: gap 0.2s;
+        }
+        .project-link:hover { gap: 0.8rem; }
+        .project-link svg { width: 1rem; height: 1rem; fill: currentColor; transition: transform 0.2s; }
+        .project-card:hover .project-link svg { transform: translateX(3px); }
+
+        /* Footer */
+        footer { border-top: 1px solid var(--border-color); padding: 2.5rem 0; }
+        .footer-content {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.875rem; color: var(--text-muted);
+        }
+        .social-links { display: flex; gap: 1.5rem; }
+        .social-link:hover { color: var(--accent-primary); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .project-hero-meta { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            /* Mobile nav — fixed full-height panel from right  (styles.css ~200) */
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;                       /* off-screen by default */
+                width: 80%;
+                height: 100vh;
+                background: var(--bg-secondary);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                transition: 0.4s ease;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+                border-left: 1px solid var(--border-color);
+                z-index: 1050;
+            }
+            .nav-menu.active { right: 0; }          /* JS toggles .active */
+
+            .hamburger { display: flex; }
+
+            .nav-link {
+                font-size: 1.1rem;                  /* larger tap target on mobile */
+                padding: 0.75rem 2rem;
+            }
+
+            .hero-title { font-size: 2.4rem; }
+            .img-grid-2, .img-grid-3, .direction-grid, .ai-steps, .case-metrics-grid { grid-template-columns: 1fr; }
+            .project-hero-meta { grid-template-columns: repeat(2,1fr); }
+            .meta-item { border-right: none !important; border-bottom: 1px solid var(--border-color); padding: 0.75rem 0 !important; }
+            .meta-item:last-child { border-bottom: none; }
+            .project-card { flex-direction: column; }
+            .footer-content { flex-direction: column; gap: 1rem; text-align: center; }
+            .closing-callout { padding: 2rem 1.5rem; }
+            .project-hero { padding: 7rem 0 3rem; }
+            .container { padding: 0 1.25rem; }
+        }
+        @media (max-width: 480px) {
+            .hero-title { font-size: 2rem; }
+            .stat-pills { gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="custom-cursor" id="cursor"></div>
+    <div class="custom-cursor-dot" id="cursorDot"></div>
+
+    <header>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">deeksha.kashyap <span class="logo-dot"></span></a>
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="../index.html" class="nav-link">Home</a></li>
+                    <li><a href="../about.html" class="nav-link">About</a></li>
+                    <li><a href="../index.html#projects" class="nav-link">Projects</a></li>
+                    <li><a href="../writings.html" class="nav-link">Writings</a></li>
+                    <li><a href="../resume.html" class="nav-link">Resume</a></li>
+                </ul>
+            </nav>
+            <div class="nav-right">
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393.007a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3zm0 2a7 7 0 1 0 5.25 11.625 9.5 9.5 0 0 1-5.18-7.79 9.516 9.516 0 0 1-.07-1.835A6.97 6.97 0 0 0 12 5z"/></svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.122 2.122-1.414 1.414-2.122-2.122zM19.07 3.515l1.414 1.414-2.122 2.121-1.414-1.414 2.122-2.121zM5.636 16.95l1.414 1.414-2.122 2.122-1.414-1.414 2.122-2.122zM1 11h3v2H1v-2zm19 0h3v2h-3v-2z"/></svg>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle Navigation">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- ── HERO ── -->
+        <section class="project-hero">
+            <div class="hero-glow"></div>
+            <div class="container reveal">
+                <span class="section-label">UX Research &amp; Product Design · Speculative Redesign</span>
+                <h1 class="hero-title">
+                    Instagram Optimises for<br>
+                    <span class="text-gradient">Time Spent.</span> I Designed for<br>
+                    Time Well Spent.
+                </h1>
+                <p class="hero-desc">
+                    A senior UX research and product design case study examining three interconnected failures in Instagram's intentional use experience — and the research-driven, iterated, and validated design solutions that address them.
+                </p>
+                <div class="stat-pills">
+                    <div class="stat-pill"><span class="stat-pill-num">2B+</span><span class="stat-pill-label">Monthly Active Users</span></div>
+                    <div class="stat-pill"><span class="stat-pill-num">50%</span><span class="stat-pill-label">of time spent on Reels</span></div>
+                    <div class="stat-pill"><span class="stat-pill-num">3</span><span class="stat-pill-label">Core UX Failures Identified</span></div>
+                    <div class="stat-pill"><span class="stat-pill-num">8</span><span class="stat-pill-label">User Interviews Conducted</span></div>
+                </div>
+                <div class="project-hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Role</span>
+                        <span class="meta-value">UX Researcher &amp; Product Designer</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Platform</span>
+                        <span class="meta-value">Instagram iOS — Speculative</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Scope</span>
+                        <span class="meta-value">3 Features · End-to-End</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Year</span>
+                        <span class="meta-value">2026</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Methods</span>
+                        <span class="meta-value">Interviews · Affinity Mapping · Wireframing</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero visual -->
+        <div class="container reveal" style="padding-top: 3rem;">
+            <div class="media-placeholder" style="aspect-ratio: 16/9;">
+                <div class="ph-icon">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                </div>
+                <span class="ph-tag">📸 Hero — All three feature screens side by side · 1920×1080px</span>
+            </div>
+            <p class="media-caption">Instagram iOS speculative redesign — Account Collections · Series Navigation · Smart Timeline Jump</p>
+        </div>
+
+        <!-- ── CASE BODY ── -->
+        <div class="project-body container">
+
+            <!-- 01 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">01 — The Hook</span>
+                    Why This Project Started
+                </h2>
+                <p class="case-text">I was watching a creator's reel on finance. It was Part 3 of a series. I had no idea Part 1 and Part 2 existed. I went to the creator's profile, scrolled for two minutes looking for earlier parts, found nothing useful, and gave up. That single moment of friction contained three separate UX failures happening simultaneously. I could not discover connected content. I had no continuity system to follow the series. And I could not navigate the creator's archive to find what I needed. Three failures, one scroll.</p>
+                <div class="case-callout secondary">
+                    <h3 class="case-callout-title">Research Participant — Content Strategist, 27</h3>
+                    <p class="case-callout-text"><em>"I save things thinking I'll go back — but by the time I do I've lost the context entirely. I don't even know what I was excited about anymore."</em></p>
+                </div>
+                <p class="case-text">I started asking people around me if they experienced the same thing. Every single person said yes — in different words, but the same story. That conversation became this case study. Not a brief assigned to me. Not a hypothetical. A real problem I lived, then investigated, then designed for.</p>
+            </section>
+
+            <!-- 02 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">02 — Problem Space</span>
+                    Three Failures. One Underserved User.
+                </h2>
+                <p class="case-text">Before touching any design tool, I mapped what I knew versus what I was assuming. Instagram is not a broken product — it is a product optimised for a different user than the one I was designing for. The platform is architected for passive consumption. Every algorithm, every feed signal, every default behaviour is optimised for time-in-app, not for the quality of that time.</p>
+                <p class="case-text">I identified a specific underserved segment: <strong>deliberate consumers</strong> — people who open Instagram with intention, follow specific creators, continue series they started, or explore topics they care about. A high-value segment with stronger creator loyalty, higher save rates, and longer-term retention.</p>
+                <div class="insight-grid">
+                    <div class="insight-card">
+                        <span class="insight-num">01</span>
+                        <div class="insight-body"><strong>Chaotic Feed, Weak Personalization &amp; Poor Creator Discovery —</strong> Instagram mixes unrelated content in one algorithm-driven feed. Saved collections act as passive folders. Recommendations are driven by passive signals like watch time — not long-term interests or intentional relationships.</div>
+                    </div>
+                    <div class="insight-card">
+                        <span class="insight-num">02</span>
+                        <div class="insight-body"><strong>Multi-Part Reel Content Is Impossible to Follow —</strong> Creators upload Part 1, Part 2, Part 3 reels but Instagram has no continuation system. Users abandon educational or storytelling journeys — not because they lost interest, but because the platform forgot.</div>
+                    </div>
+                    <div class="insight-card">
+                        <span class="insight-num">03</span>
+                        <div class="insight-body"><strong>Difficult Navigation Inside Creator Reel Timeline —</strong> When a user watches an older reel and opens the creator's profile, Instagram drops them at the most recent posts. There is no connection between the reel that created the intent to explore and the destination. Context is destroyed on arrival.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 03 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">03 — Real-World Evidence</span>
+                    Instagram Itself Confirmed These Problems
+                </h2>
+                <p class="case-text">Before conducting my own research, I looked for external validation of each problem. What I found was not circumstantial — it was direct, public, and in some cases acknowledged by Instagram's own leadership. These are not design opinions. They are documented facts.</p>
+                <div class="case-callout">
+                    <h3 class="case-callout-title">Evidence for Feature 1 — Creator Discovery &amp; Personalization</h3>
+                    <p class="case-callout-text">Adam Mosseri, Head of Instagram, publicly admitted: <em>"When you discover something in your feed that you didn't follow before, there should be a high bar — it should just be great. And I don't think that's happening enough right now."</em> <span class="source-chip">Fortune, 2022</span><br><br>A viral wave of public criticism noted Instagram no longer showed content from accounts users deliberately followed. <span class="source-chip">NPR, 2022</span><br><br>Instagram shipped user control for Reels feed in December 2025 — letting users directly choose which topics to see more or less of — validating the exact gap my Account Collections feature was designed to fill. <span class="source-chip">eMarketer, Dec 2025</span></p>
+                </div>
+                <div class="case-callout secondary">
+                    <h3 class="case-callout-title">Evidence for Feature 2 — Multi-Part Series Navigation</h3>
+                    <p class="case-callout-text">Instagram shipped 'Link a Reel' on 25 August 2025 — allowing creators to link Reels into a series with a 'Watch Part' prompt — addressing creators' long-standing requests. <span class="source-chip">Primetel / Instagram</span><br><br>An independent designer published <em>'From Scroll Rage to UX Reform'</em> on Medium/Bootcamp months before Instagram shipped their solution — independently documenting the exact same pain point. <span class="source-chip">Medium, Apr 2025</span></p>
+                </div>
+                <div class="case-callout warn">
+                    <h3 class="case-callout-title">Critical — My Design Goes Further Than What Instagram Shipped</h3>
+                    <p class="case-callout-text">Instagram's 'Link a Reel' solves the <strong>creator side</strong>. My design solves the <strong>user side</strong> — the watched / watching / unwatched navigation states embedded in the reel player, the parts strip with progress tracking, and the social-native Stories integration. That gap is where my original contribution lives. This is not duplication. This is the next step.</p>
+                </div>
+                <div class="media-placeholder" style="margin-top: 1.5rem;">
+                    <div class="ph-icon">
+                        <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <span class="ph-tag">📸 Evidence Board — Source screenshots / eMarketer headlines</span>
+                </div>
+                <p class="media-caption">External validation — public sources confirming each of the three identified problems</p>
+            </section>
+
+            <!-- 04 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">04 — User Research</span>
+                    Talking to Real People Before Drawing Anything
+                </h2>
+                <p class="case-text">I conducted eight semi-structured user interviews with participants aged 21 to 34. The recruitment criteria was specific: each participant had to follow at least five creators whose content they described as educational, informative, or serialised. This deliberately screened out purely entertainment-driven users and focused the research on the deliberate consumer segment I had identified.</p>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-body"><strong>Warm-up — Relationship Mapping:</strong> Asked participants to describe their relationship with Instagram in their own words. What they came for, what frustrated them, what they wished existed.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-body"><strong>Contextual Screen Walkthrough:</strong> Asked participants to share their screen and narrate their decisions in real time. This revealed actual behaviour versus stated behaviour — they are always different.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-body"><strong>Scenario-Based Deep Questions:</strong> "Tell me about the last time you found a creator you really liked. What did you do next? Did you go back to them? Why or why not?"</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-body"><strong>Affinity Mapping Synthesis:</strong> All observations clustered into themes. Three dominant patterns emerged consistently — creator loss, series abandonment, archive disorientation.</div>
+                    </div>
+                </div>
+                <div class="case-callout" style="margin-top: 1.5rem;">
+                    <h3 class="case-callout-title">The Three Insight Statements</h3>
+                    <p class="case-callout-text">
+                        <strong>Insight 01 — Creator Loss:</strong> Users do not lose creators because they forget them. They lose them because Instagram gives no structure to maintain an intentional relationship with a creator over time.<br><br>
+                        <strong>Insight 02 — Series Abandonment:</strong> Users do not abandon series because they lose interest. They abandon them because the platform provides no continuity trigger. Interest without infrastructure produces zero completion.<br><br>
+                        <strong>Insight 03 — Archive Disorientation:</strong> Users do not fail to explore creator archives because they are lazy. They fail because the platform destroys the contextual connection between the reel they watched and the profile they open. They arrive with intent and find chaos.
+                    </p>
+                </div>
+                <div class="media-placeholder tall" style="margin-top: 1.5rem;">
+                    <div class="ph-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                    </div>
+                    <span class="ph-tag">📸 Affinity Map / Interview Notes / Screen Recordings</span>
+                </div>
+                <p class="media-caption">Affinity mapping synthesis — three dominant themes from 8 user interviews</p>
+            </section>
+
+            <!-- 05 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">05 — Sketching</span>
+                    Thinking With a Pen Before Touching Figma
+                </h2>
+                <p class="case-text">Before I opened Figma or talked to any AI tool, I sat with a notebook and worked through the problem with hand sketches. This phase is where the most important thinking happened — not the most refined, but the most honest. Sketching forces you to commit to an idea long enough to critique it, which is the only way to find out if it is actually good.</p>
+                <div class="media-placeholder">
+                    <div class="ph-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </div>
+                    <span class="ph-tag">📸 Hand Sketches — All three pages · Wide scan or photo</span>
+                </div>
+                <p class="media-caption">Hand sketches — problem mapping, user flow diagrams, and wireframe explorations across all three features</p>
+                <ul class="case-list" style="margin-top: 1.5rem;">
+                    <li><strong>Sketch Page 1 — Account Collections Flow:</strong> Working through whether 'Save Reel' and 'Save Creator' were the same action or two different ones. I realised saving a reel is archival — saving a creator is relational. That distinction became the entire architecture of the Account Collections feature.</li>
+                    <li><strong>Sketch Page 2 — Problem Mapping &amp; Flow Diagram:</strong> The problem tree at the top — three problems in my own handwriting — and below it a flow diagram for the multi-creator collab scenario. That exact flow became the one-sheet solution I designed.</li>
+                    <li><strong>Sketch Page 3 — Multi-Part Reel Explorations:</strong> Two completely different solutions sketched side by side. The uncertainty visible here is honest — I was comparing ideas, not executing one. The grid evolved into the bottom sheet in the final design.</li>
+                </ul>
+            </section>
+
+            <!-- 06 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">06 — Direction Setting</span>
+                    What I Rejected, What I Chose, and Why
+                </h2>
+                <p class="case-text">After sketching I had more ideas than I needed. The elimination process was as important as the generation process. Every direction I rejected taught me something about what the right solution needed to be. This is where senior design thinking happens — not in choosing the first good idea, but in understanding why the second or third is better.</p>
+
+                <div class="direction-group">
+                    <p class="direction-group-label">Feature 1 — Account Collections</p>
+                    <div class="direction-grid">
+                        <div class="direction-card rejected">
+                            <div class="direction-badge">✗ Rejected</div>
+                            <div class="direction-title">Improved Save Folder System</div>
+                            <div class="direction-desc">Better folders still only organise past content. They do nothing to surface future content from creators the user cares about. Solves the symptom, not the cause.</div>
+                        </div>
+                        <div class="direction-card chosen">
+                            <div class="direction-badge">✓ Chosen</div>
+                            <div class="direction-title">Account Collections with Parallel Interest Feeds</div>
+                            <div class="direction-desc">Maps to something users already do mentally — they group creators by topic. Creates ongoing value from a one-time action. Feeds the future, not just archives the past.</div>
+                        </div>
+                        <div class="direction-card rejected">
+                            <div class="direction-badge">✗ Rejected</div>
+                            <div class="direction-title">Algorithm Preference Panel with Sliders</div>
+                            <div class="direction-desc">Requires algorithm literacy from users who should not need to understand how the feed works. Cognitively demanding with delayed payoff. Feature design for power users only.</div>
+                        </div>
+                        <div class="direction-card chosen">
+                            <div class="direction-badge">✓ Chosen</div>
+                            <div class="direction-title">Silent Collection-Driven Feed</div>
+                            <div class="direction-desc">The collection acts as an implicit signal. Users curate creators, not settings. The system does the work. Zero algorithm literacy required.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="direction-group">
+                    <p class="direction-group-label">Feature 2 — Series Navigation</p>
+                    <div class="direction-grid">
+                        <div class="direction-card rejected">
+                            <div class="direction-badge">✗ Rejected</div>
+                            <div class="direction-title">Dedicated 'Series' Tab in Navigation Bar</div>
+                            <div class="direction-desc">Adds a sixth navigation item — contradicts established design philosophy. Requires users to seek out series content proactively. Too much friction.</div>
+                        </div>
+                        <div class="direction-card chosen">
+                            <div class="direction-badge">✓ Chosen</div>
+                            <div class="direction-title">Parts Strip Embedded in Reel Player</div>
+                            <div class="direction-desc">Lives inside the surface users are already on. Uses the Stories progress bar logic that every user already understands. Zero learning curve required.</div>
+                        </div>
+                        <div class="direction-card rejected">
+                            <div class="direction-badge">✗ Rejected</div>
+                            <div class="direction-title">Netflix-Style Episode Dashboard</div>
+                            <div class="direction-desc">Consistent user feedback: 'this feels like a different app.' Answers the right problem in the wrong design language. Instagram is not Coursera.</div>
+                        </div>
+                        <div class="direction-card chosen">
+                            <div class="direction-badge">✓ Chosen</div>
+                            <div class="direction-title">Social-Native Series Integration</div>
+                            <div class="direction-desc">Series awareness lives inside Stories row, the reel player strip, and the share sheet — all surfaces users already know. No new mental model required at any point.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="direction-group">
+                    <p class="direction-group-label">Feature 3 — Smart Timeline Jump</p>
+                    <div class="direction-grid">
+                        <div class="direction-card rejected">
+                            <div class="direction-badge">✗ Rejected</div>
+                            <div class="direction-title">Search Bar Inside Creator Profile</div>
+                            <div class="direction-desc">Requires users to remember details about what they just watched in order to search. Users with intent should not need memory — the platform should have it.</div>
+                        </div>
+                        <div class="direction-card chosen">
+                            <div class="direction-badge">✓ Chosen</div>
+                            <div class="direction-title">Automatic Scroll-to-Position</div>
+                            <div class="direction-desc">Zero user action required. The platform remembers where the user came from and positions them there automatically. Frictionless by design.</div>
+                        </div>
+                        <div class="direction-card rejected">
+                            <div class="direction-badge">✗ Rejected</div>
+                            <div class="direction-title">Floating 'Jump To' Button</div>
+                            <div class="direction-desc">Three cognitive steps for a behaviour that should be automatic. Also competes visually with the existing Follow and Message buttons on profile pages.</div>
+                        </div>
+                        <div class="direction-card chosen">
+                            <div class="direction-badge">✓ Chosen</div>
+                            <div class="direction-title">Invisible Auto-Behaviour on Navigation</div>
+                            <div class="direction-desc">Auto-scroll triggers immediately on arrival. No button, no label, no learning. The feature is only visible through its result.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 07 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">07 — AI-Assisted Ideation</span>
+                    How I Used AI — and What I Overrode
+                </h2>
+                <p class="case-text">After completing my sketches and determining my design directions, I used AI tools to make my thinking visible at higher fidelity before committing to Figma. This is a deliberate workflow decision — AI as an accelerator for visualisation, not a replacement for the thinking that preceded it.</p>
+                <div class="ai-steps">
+                    <div class="ai-step-card">
+                        <div class="ai-step-num">01</div>
+                        <div class="ai-step-title">Describe, not generate</div>
+                        <div class="ai-step-desc">I described my sketched concepts in precise detail and asked AI to visualise the interaction states I had drawn by hand. The input was always my thinking, not a prompt asking AI to solve the problem.</div>
+                    </div>
+                    <div class="ai-step-card">
+                        <div class="ai-step-num">02</div>
+                        <div class="ai-step-title">Evaluate, not accept</div>
+                        <div class="ai-step-desc">Every AI-generated visual was treated as a reference for evaluation — looking for what it revealed about interaction ambiguity, hierarchy that felt wrong, or patterns that felt un-Instagram.</div>
+                    </div>
+                    <div class="ai-step-card">
+                        <div class="ai-step-num">03</div>
+                        <div class="ai-step-title">Override with decisions</div>
+                        <div class="ai-step-desc">For series navigation, AI produced a Netflix-style dashboard — the exact direction I had already eliminated. I redirected it to the in-player strip. These overrides are where my design value lived.</div>
+                    </div>
+                    <div class="ai-step-card">
+                        <div class="ai-step-num">04</div>
+                        <div class="ai-step-title">Modify, then take to Figma</div>
+                        <div class="ai-step-desc">What I ultimately took into Figma was not the AI output — it was my decisions about what the AI output revealed: which states were unclear, which patterns felt foreign to Instagram.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 08 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">08 — Feature 01</span>
+                    Account Collections + Parallel Interest Feed
+                </h2>
+                <p class="case-text">Instagram's existing saved posts feature is a passive archive. Users save content but the act of saving creates no relationship, no structure, and no ongoing value. More critically, users have no way to save an entire creator's presence — their follow list becomes cluttered and the algorithm still controls which of those creators they see on any given day.</p>
+                <div class="media-placeholder">
+                    <div class="ph-icon">
+                        <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <span class="ph-tag">📸 Figma Frames 38, 29, 39, 42, 40, 41 — Save flow progression</span>
+                </div>
+                <p class="media-caption">Figma frames — progression from wireframe to final save flow UI</p>
+                <div class="case-callout" style="margin-top: 1.5rem;">
+                    <h3 class="case-callout-title">The Edge Case That Changed the Design</h3>
+                    <p class="case-callout-text">During wireframing I identified a critical micro-interaction problem: what happens when a reel has multiple collaborating accounts tagged and a user tries to save it to a collection? The naive solution is a four-step sequential flow. The right solution is a single bottom sheet.</p>
+                </div>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-body"><strong>User taps save on a collab reel (3 accounts tagged)</strong> — System detects multiple creators on one reel.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-body"><strong>Bottom sheet opens with creator list</strong> — Each creator shown with a checkbox. Original creator pre-selected. Collaborators unchecked by default. User chooses who to save.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-body"><strong>Collection selection in same sheet</strong> — Existing collections appear as radio buttons. 'New collection' option available inline. No screen change required.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-body"><strong>CTA updates in real time</strong> — Confirm button reads: 'Save 2 accounts to UX Design' — reflecting exactly what the user selected. One tap confirms everything.</div>
+                    </div>
+                </div>
+                <div class="img-grid-2" style="margin-top: 1.5rem;">
+                    <div>
+                        <div class="media-placeholder tall">
+                            <span class="ph-tag">📸 Wireframe — Bottom sheet save flow</span>
+                        </div>
+                        <p class="media-caption">Wireframe — bottom sheet with creator list &amp; collection selection</p>
+                    </div>
+                    <div>
+                        <div class="media-placeholder tall">
+                            <span class="ph-tag">📸 Final Hi-Fi — Collection feed with distinct header</span>
+                        </div>
+                        <p class="media-caption">Final design — collection feed with creator avatars &amp; new post count</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 09 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">09 — Feature 02</span>
+                    Multi-Part Reel Series Navigation
+                </h2>
+                <p class="case-text">Creators on Instagram regularly produce content in sequential parts. Instagram has no native understanding of this. Each reel is treated as an independent piece of content. When Part 3 appears in a user's feed, there is no indication that Part 1 and 2 exist, no indicator of whether the user has watched earlier parts, and no mechanism to continue automatically.</p>
+                <div class="img-grid-2">
+                    <div>
+                        <div class="media-placeholder tall">
+                            <span class="ph-tag">📸 6-Part Grid View — All episodes with card states</span>
+                        </div>
+                        <p class="media-caption">6-part grid view — series sheet with three card states</p>
+                    </div>
+                    <div>
+                        <div class="media-placeholder tall">
+                            <span class="ph-tag">📸 4-Part 2-Column Sheet — In-player navigation strip</span>
+                        </div>
+                        <p class="media-caption">4-part 2-column sheet — embedded in reel player</p>
+                    </div>
+                </div>
+                <p class="case-text" style="margin-top: 1.5rem; font-weight: 600; color: var(--text-primary);">The Three Card States — Why Each One Matters</p>
+                <div class="card-states">
+                    <div class="card-state">
+                        <span class="card-state-label watched">Watched</span>
+                        <div class="card-state-desc">Thumbnail dimmed to 55% opacity. Blue full-width bar at bottom of card (3px). Blue checkmark in top-right corner. Tells users 'you have been here' without requiring them to remember it themselves.</div>
+                    </div>
+                    <div class="card-state">
+                        <span class="card-state-label watching">Watching</span>
+                        <div class="card-state-desc">Full opacity thumbnail. White 1.5px border around entire card. Partial white progress bar at bottom reflecting exactly how far into the part the user is. The white border alone identifies the active card — no label needed.</div>
+                    </div>
+                    <div class="card-state">
+                        <span class="card-state-label unwatched">Unwatched</span>
+                        <div class="card-state-desc">Full opacity, no border, no bar. Clean default state. Last unwatched part only gets a subtle dark overlay with 'Watch now' text — a gentle CTA, not a push notification.</div>
+                    </div>
+                </div>
+                <div class="case-callout">
+                    <h3 class="case-callout-title">Layout Decision — Why 2 Columns Not 3</h3>
+                    <p class="case-callout-text">Portrait-ratio reel thumbnails at three-column width are too small to be readable — the thumbnail becomes a colour blur. Part titles get truncated to two or three words, removing all information value. Moving to two columns gives each card enough width for a clear thumbnail and a full short title. Information density over column count — that trade-off is always worth making.</p>
+                </div>
+                <ul class="case-list">
+                    <li><strong>Stories Row:</strong> Creator avatars with active series get a purple gradient ring instead of the standard story gradient. A part-number badge — '2/5' — integrates series awareness into a surface users check multiple times daily.</li>
+                    <li><strong>DM Share Sheet:</strong> When sharing a mid-series reel via DM, the share sheet detects it is not Part 1 and surfaces 'Send with Part 1 first' as an option — without any new UI surface.</li>
+                    <li><strong>Creator Highlights:</strong> Series can be pinned as Highlights on the creator's profile with a purple ring indicator showing series status and episode progress. No new feature — existing Highlights become the series archive.</li>
+                </ul>
+                <div class="img-grid-3">
+                    <div>
+                        <div class="media-placeholder sq"><span class="ph-tag" style="font-size: .72rem;">📸 Stories Row — Series ring</span></div>
+                        <p class="media-caption">Purple gradient ring + part badge</p>
+                    </div>
+                    <div>
+                        <div class="media-placeholder sq"><span class="ph-tag" style="font-size: .72rem;">📸 DM Share Sheet</span></div>
+                        <p class="media-caption">'Send with Part 1 first' option</p>
+                    </div>
+                    <div>
+                        <div class="media-placeholder sq"><span class="ph-tag" style="font-size: .72rem;">📸 Creator Highlights</span></div>
+                        <p class="media-caption">Series archive with episode progress</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">10 — Feature 03</span>
+                    Smart Timeline Jump
+                </h2>
+                <p class="case-text">When a user watches a reel and opens that creator's profile, Instagram drops them at the most recent posts. The reel that brought them there — that created the intent to explore — is buried weeks or months deep in the grid. There is no connection between the entry point and the destination. Context is completely destroyed on arrival.</p>
+                <div class="case-callout">
+                    <h3 class="case-callout-title">The Core Behaviour — Automatic, Invisible, Frictionless</h3>
+                    <p class="case-callout-text">When the system detects that a user has navigated to a creator's profile from a specific reel, it records the upload date of that reel and scrolls the profile grid to the corresponding time position on arrival. The reel is highlighted with a thin accent-coloured border. A contextual label reading 'You came from here' appears in a muted style that does not compete with the profile content. The user did nothing to make this happen. The platform remembered.</p>
+                </div>
+                <div class="img-grid-2">
+                    <div>
+                        <div class="media-placeholder tall">
+                            <span class="ph-tag">📸 Current State — Dropped at top of profile</span>
+                        </div>
+                        <p class="media-caption">Current state — context destroyed on arrival</p>
+                    </div>
+                    <div>
+                        <div class="media-placeholder tall">
+                            <span class="ph-tag">📸 Designed State — Auto-scrolled to reel's moment</span>
+                        </div>
+                        <p class="media-caption">Designed state — auto-scrolled with 'You came from here' label</p>
+                    </div>
+                </div>
+                <ul class="case-list">
+                    <li><strong>The Floating Button I Removed:</strong> An early version included a floating 'Jump to' button — three cognitive steps for a behaviour that should be automatic. Making the behaviour automatic on arrival eliminated both problems and made the feature completely frictionless.</li>
+                    <li><strong>Related Content Surface:</strong> Below the highlighted reel, the grid surfaces a 'Related nearby' section showing other posts from the same upload period. Purely chronological adjacency, not algorithmic recommendation. The user's intent is to explore a specific moment, not discover unrelated content.</li>
+                </ul>
+            </section>
+
+            <!-- 11 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">11 — Business Value</span>
+                    How These Features Benefit Instagram's Business
+                </h2>
+                <p class="case-text">A common mistake in UX case studies is framing design improvements purely as user benefits. Senior product designers understand that user value and business value are not in opposition — they are the same argument made to different audiences. Every feature I designed produces measurable business outcomes for Meta's advertising ecosystem.</p>
+                <div class="case-metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-number">21%</div>
+                        <div class="metric-label">of all US Instagram ad impressions were Reels in Q2 2025, up from 13% in Q2 2024</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-number">50%</div>
+                        <div class="metric-label">of all time on Instagram is spent on Reels — the primary ad surface</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-number">3.5B</div>
+                        <div class="metric-label">Reels shared per day across Instagram and Facebook (Meta official data)</div>
+                    </div>
+                </div>
+                <ul class="case-list">
+                    <li><strong>Account Collections — Advertising Precision:</strong> When a user creates a collection called 'UX Design' and adds five creators, Instagram has a high-confidence explicitly declared interest signal — not inferred from passive watch time. Higher relevance = higher CTR = higher ad revenue.</li>
+                    <li><strong>EU DMA Compliance:</strong> Explicit user-declared interest signals — exactly what Account Collections produce — become the most legally defensible targeting mechanism in a post-third-party-cookie environment.</li>
+                    <li><strong>Series Navigation — Creator Retention:</strong> Instagram's lack of native series support has been a documented reason creators redistribute content to YouTube first. Fixing this keeps episodic content — and its audience — on Instagram.</li>
+                    <li><strong>Smart Timeline Jump — Profile Depth:</strong> If a user explores 15 posts in a profile session instead of 3, they see more in-feed ads per session. A direct, measurable increase in ad inventory.</li>
+                </ul>
+            </section>
+
+            <!-- 12 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">12 — Success Metrics</span>
+                    What I Would Measure If This Shipped
+                </h2>
+                <p class="case-text">Defining the right metric is itself a design decision. The wrong metric — session time, total impressions — would show any engagement feature as successful. The right metric connects specifically to the behaviour the feature was designed to change.</p>
+                <div class="insight-grid">
+                    <div class="insight-card">
+                        <span class="insight-num">F1</span>
+                        <div class="insight-body"><strong>Account Collections —</strong> Creator follow rate from collection interactions within 7 days. Return visit rate to collection feeds. Ad CTR within collection-context sessions vs standard feed sessions.</div>
+                    </div>
+                    <div class="insight-card">
+                        <span class="insight-num">F2</span>
+                        <div class="insight-body"><strong>Series Navigation —</strong> Series completion rate — % of users who watch Part 1 then all subsequent parts within 14 days (current baseline is effectively zero). Parts strip interaction rate. Average session depth within series content.</div>
+                    </div>
+                    <div class="insight-card">
+                        <span class="insight-num">F3</span>
+                        <div class="insight-body"><strong>Smart Timeline Jump —</strong> Profile exploration depth — posts viewed per session navigating from a reel vs from search or explore. Follow conversion rate from reel-to-profile journeys. In-profile ad impressions per session vs control group.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 13 -->
+            <section class="case-section reveal">
+                <h2 class="case-title">
+                    <span class="num-label">13 — Reflection</span>
+                    What I Learned. What Remains Unsolved.
+                </h2>
+                <p class="case-text">The most important design constraint was cultural, not technical. Every idea I had was subject to one overriding test: does this feel like Instagram, or does it feel like a better app wearing Instagram's clothes? The Netflix-style episode dashboard was the clearest example of a solution that answered the right problem in the wrong design language.</p>
+                <div class="case-callout">
+                    <h3 class="case-callout-title">Key Learnings</h3>
+                    <p class="case-callout-text">Everything that survived into the final design reuses an interaction pattern users already have. The parts strip uses the Stories progress bar logic. The bottom sheet uses the existing comment sheet behaviour. The Timeline Jump requires no interaction at all. These are not design limitations — they are evidence that the right solution is often the most invisible one.<br><br><strong>Showing work I rejected was as important as showing work I kept.</strong> Making rejections explicit — in research, in direction setting, in iteration — is evidence of rigorous thinking. Senior designers do not arrive at solutions. They navigate through a space of possible solutions and make defensible choices. The navigation is the work.</p>
+                </div>
+                <div class="case-callout secondary">
+                    <h3 class="case-callout-title">What Remains Unsolved</h3>
+                    <p class="case-callout-text">All three features assume the platform can reliably detect series relationships between reels — through hashtags, caption patterns like 'Part 1', or creator-set groupings. In practice, creator behaviour is inconsistent. A next step would be to design the creator-side upload experience — specifically a series grouping tool in the upload flow — to make detection reliable. Without that, the user-facing features have a dependency that undermines their consistency.</p>
+                </div>
+            </section>
+
+            <!-- Closing -->
+            <div class="closing-callout reveal">
+                <p>Instagram Optimises for Time Spent. I Designed for Time Well Spent.</p>
+                <span class="closing-sub">UX Research &amp; Product Design · Speculative Redesign · Instagram iOS · 2025–2026</span>
+            </div>
+
+        </div><!-- /project-body -->
+
+        <!-- Next Project -->
+        <section class="other-projects-section">
+            <div class="container reveal">
+                <div style="margin-bottom: 2.5rem;">
+                    <span class="section-label">Next Project</span>
+                    <h2 class="section-title">Keep Exploring</h2>
+                </div>
+                <div class="project-card" style="max-width: 680px;">
+                    <div class="project-content">
+                        <span class="project-meta">Next Case Study</span>
+                        <h3 class="project-title">Autolexica — Auto Parts Discovery Platform</h3>
+                        <p class="project-desc">Simplifying complex, multi-variable vehicle components search by designing a validation-first discovery utility that minimizes cross-tab shopping.</p>
+                        <a href="autolexica.html" class="project-link">
+                            View Autolexica Project
+                            <svg viewBox="0 0 24 24"><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <p>© 2026 Deeksha Kashyap. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/deeksha-kashyap-ux" target="_blank" rel="noopener noreferrer" class="social-link">LinkedIn</a>
+                <a href="mailto:deekshakashyap224@gmail.com" class="social-link">Email</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* Custom cursor */
+        const cursor = document.getElementById('cursor');
+        const dot = document.getElementById('cursorDot');
+        if (window.innerWidth > 768) {
+            cursor.style.display = 'block';
+            dot.style.display = 'block';
+            document.addEventListener('mousemove', e => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                dot.style.left = e.clientX + 'px';
+                dot.style.top = e.clientY + 'px';
+            });
+        }
+
+        /* Theme toggle */
+        const themeBtn = document.getElementById('themeToggle');
+        if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-theme');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        });
+
+        /* Hamburger — toggle .active on both elements (styles.css pattern) */
+        const hamburger = document.getElementById('hamburger');
+        const navMenu   = document.getElementById('navMenu');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');    /* slides panel in/out */
+        });
+        /* Close nav when a link is clicked on mobile */
+        navMenu.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        /* Reveal on scroll */
+        const revealEls = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('active');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.08 });
+        revealEls.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

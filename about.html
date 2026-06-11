@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About Deeksha Kashyap - Product Designer. Information on design values, technical background in Computer Science, and behavioral philosophy.">
+    <title>About Me | Deeksha Kashyap</title>
+    <link rel="stylesheet" href="css/style.css">
+
+   <!-- ====================================================
+     ADD THIS TO YOUR style.css  (replace old vision CSS)
+     ==================================================== -->
+
+<style>
+/* VISION SECTION */
+.vision-section-wrap {
+    background-color: var(--bg-primary);
+}
+
+.vision-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 5rem;
+    align-items: start;
+}
+
+/* ---- Timeline container ---- */
+.vision-milestones {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    padding-left: 2.2rem;   /* space for dot + line */
+}
+
+/* vertical line */
+.vision-timeline-line {
+    position: absolute;
+    left: 0.45rem;           /* centre of 16px dot */
+    top: 0.8rem;
+    bottom: 0.8rem;
+    width: 2px;
+    background: linear-gradient(
+        to bottom,
+        var(--accent-primary) 0%,
+        var(--accent-primary) 60%,
+        transparent 100%
+    );
+    opacity: 0.35;
+    z-index: 0;
+}
+
+/* ---- Each row ---- */
+.vision-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    position: relative;
+}
+
+/* dot */
+.vision-dot {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-primary);
+    background: var(--bg-primary);
+    margin-top: 0.35rem;
+    z-index: 1;
+    position: absolute;
+    left: -1.75rem;          /* pull left onto the line */
+    top: 0.35rem;
+}
+
+.vision-dot--active {
+    background: var(--accent-primary);
+    width: 16px;
+    height: 16px;
+    left: -1.8rem;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+}
+
+/* ---- Cards ---- */
+.vision-card {
+    flex: 1;
+    padding: 1.3rem 1.4rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.vision-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.vision-card--accent {
+    border-color: var(--accent-primary);
+    border-left-width: 3px;
+    background: var(--bg-secondary);   /* same bg — no extra dark */
+}
+
+.vision-year {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-primary);
+    margin-bottom: 0.45rem;
+}
+
+.vision-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem;
+    line-height: 1.3;
+}
+
+.vision-card-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-style: italic;
+    margin: 0;
+}
+
+/* ---- Right column ---- */
+.vision-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: sticky;
+    top: 6rem;
+}
+
+.vision-quote-block {
+    padding: 2rem 1.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-secondary);
+}
+
+.vision-quote-icon {
+    display: block;
+    font-size: 1.3rem;
+    color: var(--accent-primary);
+    margin-bottom: 1rem;
+}
+
+.vision-big-quote {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.65;
+    margin: 0 0 1.2rem;
+    padding: 0;
+    border: none;
+}
+
+/* tags */
+.vision-tags-block {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.vision-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    background: transparent;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s;
+    cursor: default;
+}
+
+.vision-tag:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .vision-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    .vision-right {
+        position: static;
+    }
+    .vision-big-quote {
+        font-size: 1.05rem;
+    }
+}
+
+/* ── Vision Video (9:16 Reel) ── */
+.vision-video-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 280px;          /* keeps it reel-sized, not blown up */
+    margin: 0 auto;
+    aspect-ratio: 9 / 16;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.vision-reel-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 18px;
+}
+</style>
+
+        </head>
+
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                deeksha.kashyap <span class="logo-dot"></span>
+            </a>
+            
+            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link active">About</a>
+                <a href="index.html#projects" class="nav-link">Projects</a>
+                <a href="writings.html" class="nav-link">Writings</a>
+                <a href="resume.html" class="nav-link">Resume</a>
+            </nav>
+
+            <div class="nav-right">
+                <button class="theme-btn" id="theme-toggle" aria-label="Toggle Light/Dark Theme">
+                    <svg class="moon-icon" viewBox="0 0 24 24">
+                        <path d="M12 3c.132 0 .263 0 .393.007a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3zm0 2a7 7 0 1 0 5.25 11.625 9.5 9.5 0 0 1-5.18-7.79 9.516 9.516 0 0 1-.07-1.835A6.97 6.97 0 0 0 12 5z"/>
+                    </svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24">
+                        <path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.122 2.122-1.414 1.414-2.122-2.122zM19.07 3.515l1.414 1.414-2.122 2.121-1.414-1.414 2.122-2.121zM5.636 16.95l1.414 1.414-2.122 2.122-1.414-1.414 2.122-2.122zM1 11h3v2H1v-2zm19 0h3v2h-3v-2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== PHOTO + INTRO SECTION ===== -->
+<section class="section" style="padding-top: 7rem; padding-bottom: 4rem;">
+  <div class="container">
+    <div class="photo-intro-grid reveal">
+
+      <!-- Your Photo -->
+      <div class="photo-col">
+        <div class="photo-frame-wrap">
+          <img
+            src="images/deeksha.jpg.png"
+            alt="Deeksha Kashyap – Product Designer"
+            class="about-photo"
+          />
+          <div class="photo-ring-accent"></div>
+          <span class="photo-name-badge">✦ Cognitive UX Strategist </span>
+        </div>
+      </div>
+
+      <!-- Intro Text -->
+      <div class="photo-text-col">
+        <span class="section-label">Hello, I'm</span>
+        <h1 class="section-title" style="font-size:2.8rem; margin-bottom: 1rem;">
+          Deeksha Kashyap
+        </h1>
+        <p class="about-intro-sub">
+          A <strong>Cognitive UX Strategist</strong> who thinks in systems, feels in pixels, and
+          translates human behavior into interfaces that actually work.
+          I bring a rare mix of engineering rigour and design empathy to every product I touch.
+        </p>
+        <p class="about-intro-sub" style="margin-top:1rem;">
+          When I'm not designing, I'm reading about neuroscience, writing long-form fiction,
+          or people-watching in a café—gathering the observations that quietly inform my next design.
+        </p>
+        <div class="about-tags" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem;">
+          <span class="about-tag">B2C Mobile</span>
+          <span class="about-tag">E-commerce</span>
+          <span class="about-tag">B2B SaaS</span>
+          <span class="about-tag">Behavioral UX</span>
+          <span class="about-tag">0 → 1 Design</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+    <main>
+        <!-- About Hero Section -->
+        <section class="section" style="padding-top: 8rem;">
+            <div class="container">
+                <div class="about-hero-grid">
+                    <div class="reveal">
+                        <span class="section-label">My Story</span>
+                        <h1 class="section-title" style="font-size: 3rem;">Beyond the Craft</h1>
+                        <p class="about-intro-text">
+                            I am a Product Designer focused on creating intuitive, scalable digital experiences. With a technical background and an interest in human psychology, I help bridge the gap between user behavior and business requirements.
+                        </p>
+                    </div>
+                    <div class="reveal">
+                        <p class="about-intro-sub">
+                            My journey began with a <strong>B.Tech in Computer Science & Engineering</strong>. This background provided a strong foundation in systematic thinking, data flows, and developer constraints. It allows me to design products that are not only user-centered but also technically feasible and scalable.
+                        </p>
+                        <p class="about-intro-sub" style="margin-top:1.5rem">
+                            I see interfaces as journeys and products as stories. By combining UX principles, behavioral observations, and analytics (GA4/Microsoft Clarity), I focus on reducing cognitive load and highlighting critical interactions to help users reach their goals efficiently.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Three pillars of design thinking -->
+                <div class="about-gallery-grid">
+                    <!-- Card 1 -->
+                    <div class="gallery-card reveal">
+                        <div class="gallery-icon">
+                            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-6h2v2h-2v-2zm2-2.5a3.5 3.5 0 1 0-2.5-3.32h2a1.5 1.5 0 1 1 2.5 1.18 2 2 0 0 0-1 1.7V14h-1v-.5z"/></svg>
+                        </div>
+                        <h3 class="gallery-title">Behavioral Observation</h3>
+                        <p class="gallery-desc">
+                            I closely observe how small, daily actions reflect user habits. Identifying unseen frictions—both offline and online—is where true product empathy begins.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="gallery-card reveal">
+                        <div class="gallery-icon">
+                            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 3c-1.2 0-2.4 1-3.2 2.2C8 6.4 7.5 8 7.5 9.5c0 1 .3 2 .8 2.8l-4.1 4.1a1 1 0 0 0 0 1.4l1.4 1.4a1 1 0 0 0 1.4 0l4.1-4.1c.8.5 1.8.8 2.8.8 1.5 0 3.1-.5 4.3-1.3C19 12.4 20 11.2 20 10c0-3.9-3.6-7-8-7zm0 12c-.8 0-1.6-.2-2.3-.6L8.6 15c-.4-.4-.4-1.1 0-1.5.4-.4 1.1-.4 1.5 0l.6.6c.4.7 1 1.2 1.8 1.4V15.5zm0-4.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                        </div>
+                        <h3 class="gallery-title">Systems & Data Thinking</h3>
+                        <p class="gallery-desc">
+                            My engineering background helps me collaborate with development teams. I understand API constraints, data structures, and how backends serve frontend states.
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="gallery-card reveal">
+                        <div class="gallery-icon">
+                            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path d="M13 10h7l-9 11v-7H4l9-11v7z"/></svg>
+                        </div>
+                        <h3 class="gallery-title">Business & Speed Value</h3>
+                        <p class="gallery-desc">
+                            Reducing steps enhances user efficiency, which drives conversion rates. I design with measurable outcomes in mind—like task-time reductions and increased search interactions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inspirations Section -->
+        <section class="section" style="background-color: var(--bg-secondary);">
+            <div class="container">
+                <div class="about-hero-grid" style="align-items: center;">
+                    <div class="reveal">
+                        <span class="section-label">Inspirations & Focus</span>
+                        <h2 class="section-title">Beyond the Screen</h2>
+                        <p class="about-intro-sub" style="font-size:1.1rem">
+                            Outside of design tools, I draw inspiration from neuroscience, philosophy, and everyday patterns. Exploring different environments helps me build an adaptable design approach.
+                        </p>
+                        <p class="about-intro-sub">
+                            I enjoy reading books on pattern recognition, human behavior, and storytelling. Simple routines—like a well-brewed cup of coffee or observing people in public spaces—often spark the best product solutions.
+                        </p>
+                    </div>
+                    
+                    <div class="reveal" style="display:flex;flex-direction:column;gap:1.5rem">
+                        <blockquote class="about-teaser-quote">
+                            “Every product tells a story, and every interface is a journey.”
+                            <span class="quote-author">Deeksha Kashyap</span>
+                        </blockquote>
+                        <blockquote class="about-teaser-quote" style="border-color: var(--accent-secondary)">
+                            “Simplifying complexity is not about removing features—it is about organizing them so they match user intent.”
+                            <span class="quote-author">UX Standard</span>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <!-- ===== VISION SECTION ===== -->
+<!-- Place this BETWEEN "Inspirations & Focus" section and "Contact" section -->
+
+<section class="section vision-section-wrap">
+    <div class="container">
+
+        <!-- Section Header -->
+        <div class="reveal" style="margin-bottom: 3.5rem;">
+            <span class="section-label">Where I'm Headed</span>
+            <h2 class="section-title" style="font-size: 2.4rem; max-width: 600px;">
+                My Vision for the Next 5–10 Years
+            </h2>
+            <p class="about-intro-sub" style="max-width: 1000px; margin-top: 1rem;">
+                Two years in, I already know this — great design is never just visual. It's the result of understanding behavior, reading systems, and asking the questions no one else thought to ask. That's the designer I am today, and the strategist I'm becoming.
+            </p>
+        </div>
+
+        <!-- Vision Grid -->
+        <div class="vision-grid"> 
+
+            <!-- LEFT: Timeline Cards -->
+             <div class="vision-milestones reveal">
+
+                <!-- Timeline line -->
+                <!-- <div class="vision-timeline-line"></div> -->
+
+                <!-- Card 1 -->
+                <div class="vision-item">
+                    <div class="vision-dot"></div>
+                    <div class="vision-card">
+                        <span class="vision-year">Now → 2 Years</span>
+                        <h4 class="vision-card-title">UI/UX Designer & Researcher</h4>
+                        <p class="vision-card-desc">
+                            "I don't just design screens — I map the invisible gap between what users say, what they do, and what the business actually needs."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 2 — Accent -->
+                <div class="vision-item">
+                    <div class="vision-dot vision-dot--active"></div>
+                    <div class="vision-card vision-card--accent">
+                        <span class="vision-year">3–5 Years</span>
+                        <h4 class="vision-card-title">Cognitive UX Strategist</h4>
+                        <p class="vision-card-desc">
+                            "My next chapter is where behavioral science meets product strategy — designing systems that don't just work for users, but work <em>with</em> how the human mind actually operates."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="vision-item">
+                    <div class="vision-dot"></div>
+                    <div class="vision-card">
+                        <span class="vision-year">5–10 Years</span>
+                        <h4 class="vision-card-title">Global CX Consultant</h4>
+                        <p class="vision-card-desc">
+                            "I see myself at the table where CX decisions shape business direction — consulting with global teams to ensure that what's built for millions of users is rooted in real human truth."
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: Video Block -->
+<div class="vision-right reveal">
+
+    <div class="vision-quote-block">
+        <!-- 9:16 Video (Instagram Reel ratio) -->
+        <div class="vision-video-wrap">
+            <video
+                class="vision-reel-video"
+                src="video/me_videos.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                controls
+            ></video>
+        </div>
+    </div>
+
+   <!-- > <div class="vision-tags-block">
+        <span class="vision-tag">Behavioral Science</span>
+        <span class="vision-tag">Human-Centered AI</span>
+        <span class="vision-tag">CX Strategy</span>
+        <span class="vision-tag">Global Consulting</span>
+        <span class="vision-tag">Business Alignment</span>
+    </div> -->
+
+</div>
+
+        </div>
+    </div>
+</section>
+
+        <!-- Contact Section -->
+        <section class="section">
+            <div class="container">
+                <div class="contact-cta reveal">
+                    <h2 class="contact-cta-title">Let’s Build Something Meaningful</h2>
+                    <p class="contact-cta-desc">
+                        I am open to collaborations, full-time product design opportunities, and conversations about design strategy.
+                    </p>
+                    <div class="email-copy-box">
+                        <span class="email-text" id="email-address">deekshakashyap224@gmail.com</span>
+                        <button class="copy-btn" id="copy-email-btn">
+                            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16 2H8C6.9 2 6 2.9 6 4v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h8v12zm-3-17h-8c-1.1 0-2 .9-2 2v12h2V3h8V1z"/></svg>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p>© 2026 Deeksha Kashyap. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/deeksha-kashyap-ux" target="_blank" rel="noopener noreferrer" class="social-link">LinkedIn</a>
+                <a href="mailto:deekshakashyap224@gmail.com" class="social-link">Email</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

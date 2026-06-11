@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Design articles and publications by Deeksha Kashyap. Reflections on cognitive biases, storytelling, and user experience.">
+    <title>Writings | Deeksha Kashyap</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                deeksha.kashyap <span class="logo-dot"></span>
+            </a>
+            
+            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="index.html#projects" class="nav-link">Projects</a>
+                <a href="writings.html" class="nav-link active">Writings</a>
+                <a href="resume.html" class="nav-link">Resume</a>
+            </nav>
+
+            <div class="nav-right">
+                <button class="theme-btn" id="theme-toggle" aria-label="Toggle Light/Dark Theme">
+                    <svg class="moon-icon" viewBox="0 0 24 24">
+                        <path d="M12 3c.132 0 .263 0 .393.007a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3zm0 2a7 7 0 1 0 5.25 11.625 9.5 9.5 0 0 1-5.18-7.79 9.516 9.516 0 0 1-.07-1.835A6.97 6.97 0 0 0 12 5z"/>
+                    </svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24">
+                        <path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.122 2.122-1.414 1.414-2.122-2.122zM19.07 3.515l1.414 1.414-2.122 2.121-1.414-1.414 2.122-2.121zM5.636 16.95l1.414 1.414-2.122 2.122-1.414-1.414 2.122-2.122zM1 11h3v2H1v-2zm19 0h3v2h-3v-2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Writings Header -->
+        <section class="section" style="padding-top: 8rem; padding-bottom: 2rem;">
+            <div class="container">
+                <span class="section-label">Case Studies & Writing</span>
+                <h1 class="section-title" style="font-size: 3rem;">Articles & Insights</h1>
+                <p class="section-desc" style="max-width: 600px;">
+                    Reflections on cognitive design biases, product narratives, and lessons learned from translating complex requirements into simple designs.
+                </p>
+            </div>
+        </section>
+
+        <!-- Writings List -->
+        <section class="section" style="padding-top: 2rem;">
+            <div class="container">
+                <div class="writings-list">
+                    <!-- Card 1 -->
+                    <a href="writings/rational-users.html" class="writing-card reveal">
+                        <div class="writing-info">
+                            <span class="writing-date">May 2026 • Behavioral Psychology</span>
+                            <h3 class="writing-title">We Design for Rational Users. But Rational Users Don't Exist.</h3>
+                            <p class="writing-desc">An exploration of how unconscious human biases, emotional triggers, and heuristic shortcuts define how people interact with interfaces. Designed for designers facing cognitive bias friction points.</p>
+                        </div>
+                        <div class="writing-arrow">
+                            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                        </div>
+                    </a>
+
+                    <!-- Card 2 -->
+                    <a href="writings/silent-reader.html" class="writing-card reveal">
+                        <div class="writing-info">
+                            <span class="writing-date">April 2026 • Storytelling</span>
+                            <h3 class="writing-title">From Silent Reader to Storyteller</h3>
+                            <p class="writing-desc">My perspective on why storytelling is the most critical tool for a product designer—communicating ideas, designs, and business value. Relates three small ideas from a pandemic writer.</p>
+                        </div>
+                        <div class="writing-arrow">
+                            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section" style="background-color: var(--bg-secondary);">
+            <div class="container">
+                <div class="contact-cta reveal">
+                    <h2 class="contact-cta-title">Let’s Build Something Meaningful</h2>
+                    <p class="contact-cta-desc">
+                        Have thoughts on design psychology, or need a speaker/collaborator? Reach out.
+                    </p>
+                    <div class="email-copy-box">
+                        <span class="email-text" id="email-address">deekshakashyap224@gmail.com</span>
+                        <button class="copy-btn" id="copy-email-btn">
+                            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16 2H8C6.9 2 6 2.9 6 4v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h8v12zm-3-17h-8c-1.1 0-2 .9-2 2v12h2V3h8V1z"/></svg>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p>© 2026 Deeksha Kashyap. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/deeksha-kashyap-ux" target="_blank" rel="noopener noreferrer" class="social-link">LinkedIn</a>
+                <a href="mailto:deekshakashyap224@gmail.com" class="social-link">Email</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

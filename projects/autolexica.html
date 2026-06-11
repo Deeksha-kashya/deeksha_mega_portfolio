@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Autolexica Case Study - Simplifying auto parts discovery through vehicle-based validation. End-to-end product design by Deeksha Kashyap.">
+    <title>Autolexica Case Study | Deeksha Kashyap</title>
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+        /* ── CASE STUDY PAGE STYLES ── */
+        /* Uses your existing CSS variables from style.css.
+           Only case-study-specific components are defined here. */
+
+        /* ── Image / Video placeholder sections ── */
+        .media-block {
+            width: 100%;
+            margin: 2rem 0;
+        }
+        .media-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-secondary, #f8f7ff);
+            border: 2px dashed var(--border-color, #e8e6f0);
+            border-radius: var(--radius, 16px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .media-placeholder:hover {
+            border-color: var(--accent-primary, #6c63ff);
+            background: rgba(108,99,255,0.04);
+        }
+        .media-placeholder.tall    { aspect-ratio: 4/3; }
+        .media-placeholder.square  { aspect-ratio: 1/1; }
+
+        /* Drop real img/video inside and it fills the placeholder */
+        .media-placeholder img,
+        .media-placeholder video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: calc(var(--radius, 16px) - 2px);
+        }
+
+        .ph-icon {
+            width: 52px; height: 52px;
+            background: var(--bg-card, #fff);
+            border: 1px solid var(--border-color, #e8e6f0);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(108,99,255,0.08);
+        }
+        .ph-icon svg {
+            width: 22px; height: 22px;
+            stroke: var(--accent-primary, #6c63ff);
+            fill: none; stroke-width: 1.5;
+        }
+        .ph-tag {
+            font-size: 0.8rem; font-weight: 500;
+            color: var(--text-muted, #888899);
+            background: var(--bg-card, #fff);
+            padding: 0.3rem 0.85rem;
+            border-radius: 100px;
+            border: 1px solid var(--border-color, #e8e6f0);
+            text-align: center;
+        }
+        .media-caption {
+            font-size: 0.8rem;
+            color: var(--text-muted, #888899);
+            text-align: center;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* ── 2 & 3 column image grids ── */
+        .img-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+        .img-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+
+        /* ── Video section ── */
+        .video-section {
+            background: var(--bg-secondary, #f8f7ff);
+            border: 1px solid var(--border-color, #e8e6f0);
+            border-radius: var(--radius, 16px);
+            padding: 2.5rem;
+            margin: 2rem 0;
+        }
+        .video-section-label {
+            font-size: 0.72rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent-primary, #6c63ff);
+            margin-bottom: 0.4rem;
+        }
+        .video-section-title {
+            font-size: 1.15rem; font-weight: 700;
+            color: var(--text-primary, #1a1a2e);
+            margin-bottom: 1.5rem;
+        }
+        .video-wrap {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-card, #fff);
+            border: 2px dashed var(--border-color, #e8e6f0);
+            border-radius: var(--radius-sm, 10px);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .video-wrap:hover { border-color: var(--accent-primary, #6c63ff); }
+
+        /* Real video or iframe fills this */
+        .video-wrap video,
+        .video-wrap iframe {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            border: none;
+            border-radius: calc(var(--radius-sm, 10px) - 2px);
+        }
+        .video-placeholder-inner {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 1rem; z-index: 1;
+        }
+        .play-btn {
+            width: 68px; height: 68px;
+            background: var(--accent-primary, #6c63ff);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 24px rgba(108,99,255,0.35);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .play-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 32px rgba(108,99,255,0.45);
+        }
+        .play-btn svg { width: 26px; height: 26px; fill: #fff; margin-left: 4px; }
+        .video-ph-text {
+            font-size: 0.875rem;
+            color: var(--text-muted, #888899);
+            text-align: center; line-height: 1.6;
+        }
+
+        /* ── Steps / User flow ── */
+        .steps {
+            display: flex; flex-direction: column;
+            border: 1px solid var(--border-color, #e8e6f0);
+            border-radius: var(--radius, 16px);
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+        .step {
+            display: flex; align-items: flex-start; gap: 1.25rem;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color, #e8e6f0);
+            background: var(--bg-card, #151c31);
+            transition: background 0.3s;
+        }
+        .step:last-child { border-bottom: none; }
+        .step:hover { background: var(--bg-secondary, #f8f7ff); }
+        .step-num {
+            width: 32px; height: 32px;
+            background: rgba(108,99,255,0.1);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 700;
+            color: var(--accent-primary, #6c63ff);
+            flex-shrink: 0;
+        }
+        .step-body {
+            font-size: 0.975rem;
+            color: var(--text-secondary, #4a4a6a);
+            line-height: 1.7;
+        }
+        .step-body strong { color: var(--text-primary, #1a1a2e); font-weight: 600; }
+
+        /* ── Responsive ── */
+        @media (max-width: 680px) {
+            .img-grid-2, .img-grid-3 { grid-template-columns: 1fr; }
+            .video-section { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                deeksha.kashyap <span class="logo-dot"></span>
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="nav-menu" id="nav-menu">
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="../about.html" class="nav-link">About</a>
+                <a href="../index.html#projects" class="nav-link">Projects</a>
+                <a href="../writings.html" class="nav-link">Writings</a>
+                <a href="../resume.html" class="nav-link">Resume</a>
+            </nav>
+            <div class="nav-right">
+                <button class="theme-btn" id="theme-toggle" aria-label="Toggle Light/Dark Theme">
+                    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393.007a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3zm0 2a7 7 0 1 0 5.25 11.625 9.5 9.5 0 0 1-5.18-7.79 9.516 9.516 0 0 1-.07-1.835A6.97 6.97 0 0 0 12 5z"/></svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.122 2.122-1.414 1.414-2.122-2.122zM19.07 3.515l1.414 1.414-2.122 2.121-1.414-1.414 2.122-2.121zM5.636 16.95l1.414 1.414-2.122 2.122-1.414-1.414 2.122-2.122zM1 11h3v2H1v-2zm19 0h3v2h-3v-2z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ══ PROJECT HERO ══════════════════════════════════════════ -->
+        <section class="project-hero">
+            <div class="container reveal">
+                <span class="section-label">UX/UI &amp; End-to-End Design</span>
+                <h1 class="section-title" style="font-size:3.5rem; line-height:1.1;">
+                    Autolexica — Auto Parts Discovery Platform
+                </h1>
+                <p class="section-desc" style="max-width:800px; font-size:1.25rem;">
+                    Simplifying complex, multi-variable vehicle components search by designing a
+                    validation-first discovery utility that minimizes cross-tab shopping.
+                </p>
+                <div class="project-hero-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Role</span>
+                        <span class="meta-value">UI/UX Designer</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Industry</span>
+                        <span class="meta-value">Automotive Tech</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Duration</span>
+                        <span class="meta-value">12 Weeks</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Outcome</span>
+                        <span class="meta-value">2,500+ Early Visits</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ HERO IMAGE ════════════════════════════════════════════ -->
+        <div class="container reveal" style="padding-top:3rem;">
+    <div class="media-block">
+        
+        <!-- ✅ REPLACE placeholder div with this -->
+        <img src="../images/hero_auto.png" 
+             alt="Autolexica hero"
+             style="width:100%; border-radius:12px; display:block;">
+        
+        <p class="media-caption">Autolexica — platform overview, desktop view</p>
+    </div>
+</div>
+
+        <!-- ══ CASE BODY ══════════════════════════════════════════════ -->
+        <div class="project-body container">
+
+            <!-- Introduction -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Introduction</h2>
+                <p class="case-text">
+                    Autolexica is an intelligent auto-parts search and validation platform designed to simplify
+                    how users find compatible components. Unlike standard e-commerce shops, Autolexica does not
+                    directly handle sales logistics. Instead, it serves as a reliable connector,
+                    validation center, and discovery layer for vehicle parts.
+                </p>
+
+                <!-- Context photo -->
+                <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  CONTEXT PHOTO                                       ║
+                    ║  <img src="images/context.jpg" alt="Context photo"> ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                    <div class="media-placeholder tall">
+                        <img src="../images/new_autolexica.png" alt="Autolexica hero" style="width:100%; border-radius:12px; display:block;">
+                        <span class="ph-tag">📸 Context Photo — phone on workbench / real-world usage</span>
+                    </div>
+                    <p class="media-caption">New context — how users interact with Autolexica on mobile</p>
+                </div>
+            </section>
+
+            <!-- Problem -->
+            <section class="case-section reveal">
+                <h2 class="case-title">The Problem</h2>
+                <p class="case-text">
+                    The European auto-parts landscape is highly fragmented, making part compatibility
+                    a constant challenge for average drivers and professional workshops alike.
+                    Users faced several key friction points:
+                </p>
+                <ul class="case-list">
+                    <li><strong>No Validation Trust:</strong> Users were never 100% sure if a part ordered online would fit their specific engine or model year.</li>
+                    <li><strong>Multi-Tab Fatigue:</strong> Users had to cross-reference technical numbers (OEM codes, VINs, engine codes) across multiple OEM sites and aftermarket storefronts.</li>
+                    <li><strong>Broken Compliance Loops:</strong> In regions like Germany, strict regulatory compliance data (e.g., Gutachten) was siloed and inaccessible during regular part searches.</li>
+                    <li><strong>Cognitive Overload:</strong> Empty result states or massive grids of unvalidated search results led to instant user drop-off.</li>
+                    <li><strong>Disconnected Supply Chain:</strong> Vendors and buyers are not aligned — OEM, aftermarket, and third-party inventories don't sync.</li>
+                </ul>
+            </section>
+
+            <!-- Goal -->
+            <section class="case-section reveal">
+                <h2 class="case-title">The Goal</h2>
+                <div class="case-callout">
+                    <h3 class="case-callout-title">Success Parameters</h3>
+                    <p class="case-callout-text">
+                        Create a structured, validation-first search experience that reduces multi-website searches,
+                        verifies compatibility using vehicle identifiers upfront, and provides fallback
+                        recommendations when exact matches are missing.
+                    </p>
+                </div>
+                <ul class="case-list">
+                    <li>Enable <strong>accurate part validation</strong> based on vehicle data</li>
+                    <li>Reduce <strong>multi-tab dependency</strong> to a single reliable platform</li>
+                    <li>Build a <strong>unified search experience</strong> across OEM, aftermarket, and third-party</li>
+                    <li>Simplify decision-making for <strong>non-expert users</strong></li>
+                    <li>Create a <strong>bridge between fragmented suppliers and users</strong></li>
+                </ul>
+            </section>
+
+            <!-- Research & Insights -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Research &amp; Insights</h2>
+                <p class="case-text">
+                    Using <strong>Google Analytics 4</strong> and <strong>Microsoft Clarity</strong>, we audited
+                    user behavior patterns during vehicle queries and conducted interviews with workshop managers.
+                    We discovered key insights:
+                </p>
+                <div class="case-callout" style="border-left-color: var(--accent-secondary);">
+                    <h3 class="case-callout-title" style="color:var(--accent-secondary);">Key Findings</h3>
+                    <p class="case-callout-text">
+                        <strong>1. Trust is the Primary Barrier:</strong> Users hesitate to complete transactions
+                        because they fear the hassle of returning heavy auto parts. Validation must be displayed upfront.<br><br>
+                        <strong>2. Non-Linear Querying:</strong> A user may begin with a car model, switch to a VIN,
+                        then search for an OEM number. The search bar must handle all inputs seamlessly.<br><br>
+                        <strong>3. "No Results" is Fatal:</strong> An empty search state resulted in an immediate exit.
+                        Providing fallback options, direct support requests, or general categories is essential.<br><br>
+                        <strong>4. Users prefer guided systems</strong> over open-ended search flows.
+                    </p>
+                </div>
+
+                <!-- Research artifact -->
+                <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  RESEARCH ARTIFACT                                   ║
+                    ║  <img src="images/research.jpg"                      ║
+                    ║       alt="Research board">                          ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                    <!--<div class="media-placeholder">
+                        <div class="ph-icon">
+                            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        </div>
+                        <span class="ph-tag">📸 Research Artifact — Affinity map / Clarity heatmap / GA4 screenshot</span>
+                    </div>
+                    <p class="media-caption">User behavior analysis — session recordings via Microsoft Clarity</p>
+                </div>
+            </section>
+
+            <!-- Solution -->
+            <section class="case-section reveal">
+                <h2 class="case-title">The Solution</h2>
+                <p class="case-text">
+                    We designed a minimal, <strong>validation-first web app</strong> structure featuring a shift
+                    in the core experience:
+                </p>
+                <div class="case-callout">
+                    <h3 class="case-callout-title">Experience Shift</h3>
+                    <p class="case-callout-text">
+                        <strong>Before:</strong> search → guess → verify → return → retry<br>
+                        <strong>After:</strong> search → validate → decide
+                    </p>
+                </div>
+                <ul class="case-list">
+                    <li><strong>Multi-Input Search:</strong> A unified input field that automatically parses and identifies VINs, OEM codes, gearbox identifiers, and engine numbers.</li>
+                    <li><strong>Interactive Validation Layer:</strong> A visual compatibility checkmark showing "This fits your Saved Vehicle" or "Incompatible" dynamically.</li>
+                    <li><strong>Smart Empty States:</strong> If an exact OEM part is unavailable, the UI presents secondary aftermarket alternatives and a fast "Request Part Info" button.</li>
+                    <li><strong>Saved Vehicles Tray:</strong> A one-click toggle to select and apply active car parameters for ongoing part searches.</li>
+                </ul>
+
+                <!-- 2-col feature screens -->
+                <div class="img-grid-2">
+                    <div>
+                        <!--
+                        ╔══════════════════════════════════════════════╗
+                        ║  SCREEN 1 · Multi-input search UI            ║
+                        ║  <img src="images/screen-search.jpg"         ║
+                        ║       alt="Search UI">                       ║
+                        ╚══════════════════════════════════════════════╝
+                        -->
+                        <div class="media-placeholder tall">
+                            <div class="ph-icon">
+                                <img src="../images/multi_search.png" alt="Search UI">
+                            </div>
+                            <span class="ph-tag">📸 Multi-Input Search Screen</span>
+                        </div>
+                        <p class="media-caption">Unified search — VIN / OEM / model / engine code</p>
+                    </div>
+                    <div>
+                        <!--
+                        ╔══════════════════════════════════════════════╗
+                        ║  SCREEN 2 · Validation results               ║
+                        ║  <img src="images/screen-validation.jpg"     ║
+                        ║       alt="Validation UI">                   ║
+                        ╚══════════════════════════════════════════════╝
+                        -->
+                        <div class="media-placeholder tall">
+                            <div class="ph-icon">
+                                <img src="../images/validaction_result.png" alt="Validation UI">
+                            </div>
+                            <span class="ph-tag">📸 Validation Results Screen</span>
+                        </div>
+                        <p class="media-caption">Real-time compatibility check — "Fits your vehicle"</p>
+                    </div>
+                </div>
+
+                <!-- 3-col minor feature screens update with 2 colume in class imag _gride-3 -->
+                <div class="img-grid-2">
+                    <div>
+                        <!--
+                        ╔════════════════════════════════════╗
+                        ║  SCREEN 3 · Smart fallback state   ║
+                        ║  <img src="images/fallback.jpg"    ║
+                        ║       alt="Fallback state">        ║
+                        ╚════════════════════════════════════╝
+                        -->
+                        <!-- <div class="media-placeholder square">
+                            <span class="ph-tag" style="font-size:0.72rem;">📸 Smart Fallback State</span>
+                        </div>
+                        <p class="media-caption">Smart empty state — alternatives + request form</p>
+                    </div>
+                    <div>
+                        <!--
+                        ╔════════════════════════════════════╗
+                        ║  SCREEN 4 · Saved vehicles tray    ║
+                        ║  <img src="images/saved.jpg"       ║
+                        ║       alt="Saved vehicles">        ║
+                        ╚════════════════════════════════════╝
+                        -->
+                        <div class="media-placeholder tall">
+                            <img src="../images/heavy _vichel.png" alt="Saved vehicles">
+                        </div>
+                        <p class="media-caption">Heavy Vehicle — one-click switching</p>
+                    </div>
+                    <div>
+                        <!--
+                        ╔════════════════════════════════════╗
+                        ║  SCREEN 5 · Category navigation    ║
+                        ║  <img src="images/category.jpg"    ║
+                        ║       alt="Category nav">          ║
+                        ╚════════════════════════════════════╝
+                        -->
+                        <div class="media-placeholder tall">
+                            <img src="../images/catagery_autolexica.png" alt="Category nav">
+                        </div>
+                        <p class="media-caption">Visual categories for non-expert users</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Flow -->
+            <section class="case-section reveal">
+                <h2 class="case-title">User Flow (Simplified)</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-body">User enters any identifier — <strong>VIN / OEM code / engine code / car model</strong></div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-body">System <strong>validates the vehicle</strong> and surfaces only compatible parts</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-body">Shows <strong>validated, filtered results</strong> — no guesswork, no irrelevant items</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-body">If no exact match → <strong>alternatives shown</strong> + "Request Part Info" form appears immediately</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">5</div>
+                        <div class="step-body">User <strong>saves vehicle</strong> for future sessions or connects via support (call / chat)</div>
+                    </div>
+                </div>
+
+                <!-- Flow diagram -->
+                <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  USER FLOW DIAGRAM — Export from Figma               ║
+                    ║  <img src="images/user-flow.jpg"                     ║
+                    ║       alt="User flow diagram">                       ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                    <div class="media-placeholder">
+                        <div class="ph-icon">
+                            <img src="../images/autolexica_userflow.png" alt="User flow diagram">
+                        </div>
+                        <span class="ph-tag">📸 User Flow Diagram — Export from Figma · Wide format</span>
+                    </div>
+                    <p class="media-caption">End-to-end user flow — entry to validated part discovery</p>
+                </div>
+            </section>
+
+            <!-- Design Decisions -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Design Decisions</h2>
+                <ul class="case-list">
+                    <li><strong>Multi-entry search</strong> → matches real, non-linear user behavior</li>
+                    <li><strong>Validation-first UI</strong> → builds trust instantly before purchase decision</li>
+                    <li><strong>Reduced clutter UI</strong> → lowers cognitive load at every step</li>
+                    <li><strong>No dead ends</strong> → always surface alternatives or support — zero empty-state exits</li>
+                    <li><strong>Platform-controlled vendors</strong> → ensures quality and removes marketplace chaos</li>
+                </ul>
+
+                <!-- Lo-fi → Hi-fi pair -->
+                <div class="img-grid-1" style="margin-top:1.75rem;">
+                    <div>
+                        <!--
+                        ╔══════════════════════════════════════════╗
+                        ║  WIREFRAME / LO-FI                       ║
+                        ║  <img src="images/lofi.jpg"              ║
+                        ║       alt="Lo-fi wireframe">             ║
+                        ╚══════════════════════════════════════════╝
+                        -->
+                        <div class="media-placeholder tall">
+                            <img src="../images/log_wifi (1).png" alt="Lo-fi wireframe">
+                        </div>
+                        <p class="media-caption">Early lo-fi wireframe — exploration phase</p>
+                    </div>
+                    <div>
+                        <!--
+                        ╔══════════════════════════════════════════╗
+                        ║  FINAL HI-FI SCREEN                      ║
+                        ║  <img src="images/hifi.jpg"              ║
+                        ║       alt="Final hi-fi">                 ║
+                        ╚══════════════════════════════════════════╝
+                        -->
+                       <!-- > <div class="media-placeholder tall">
+                            <span class="ph-tag">📸 Final Hi-Fi Screen</span>
+                        </div>
+                        <p class="media-caption">Final hi-fi design — refined solution</p> -->
+                    </div> 
+                </div> 
+            </section>
+
+            <!-- VIDEO SECTION -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Prototype Walkthrough</h2>
+                <div class="video-section">
+                    <div class="video-section-label">Video</div>
+                    <div class="video-section-title">See the validation flow in motion</div>
+                    <!--
+                    ╔══════════════════════════════════════════════════════════════╗
+                    ║  VIDEO — Uncomment ONE of the three options below:          ║
+                    ║                                                              ║
+                    ║  OPTION A · Local MP4:                                      ║
+                    ║  <video controls poster="images/video-thumb.jpg">           ║
+                    ║    <source src="video/walkthrough.mp4" type="video/mp4">   ║
+                    ║  </video>                                                    ║
+                    ║                                                              ║
+                    ║  OPTION B · YouTube:                                        ║
+                    ║  <iframe                                                     ║
+                    ║    src="https://www.youtube.com/embed/YOUR_VIDEO_ID"        ║
+                    ║    allowfullscreen title="Autolexica walkthrough">          ║
+                    ║  </iframe>                                                   ║
+                    ║                                                              ║
+                    ║  OPTION C · Loom:                                           ║
+                    ║  <iframe                                                     ║
+                    ║    src="https://www.loom.com/embed/YOUR_LOOM_ID"            ║
+                    ║    allowfullscreen title="Autolexica walkthrough">          ║
+                    ║  </iframe>                                                   ║
+                    ╚══════════════════════════════════════════════════════════════╝
+                    -->
+                    <div class="video-wrap">
+                        <div class="video-placeholder-inner">
+                            <div class="play-btn">
+                                <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+                            </div> 
+                            <!-- <div class="video-ph-text">
+                                🎬 Add prototype video here<br> -->
+                                <video controls poster="../video/autolexica_prototype.mp4" style="width:100%; border-radius:12px; display:block;">
+                                    <source src="../video/autolexica_prototype.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Impact -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Product Outcomes</h2>
+                <p class="case-text">Within three months of releasing the validation-first beta:</p>
+                <div class="case-metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-number">2,500+</div>
+                        <div class="metric-label">Early Platform Visits</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-number">500+</div>
+                        <div class="metric-label">Successful Part Discoveries</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-number">24+</div>
+                        <div class="metric-label">User Registrations</div>
+                    </div>
+                </div>
+
+                <!-- Analytics screenshot -->
+                <div class="media-block">
+                    <!--
+                    ╔══════════════════════════════════════════════════════╗
+                    ║  ANALYTICS SCREENSHOT                                ║
+                    ║  <img src="images/analytics.jpg"                     ║
+                    ║       alt="GA4 impact metrics">                      ║
+                    ╚══════════════════════════════════════════════════════╝
+                    -->
+                    <div class="media-placeholder">
+                        <div class="ph-icon">
+                            <img src="../images/ANALYTICS SCREENSHOT.png" alt="GA4 impact metrics">
+                        </div>
+                        <span class="ph-tag">📸 GA4 / Analytics Screenshot — Impact metrics dashboard</span>
+                    </div>
+                    <p class="media-caption">GA4 &amp; Clarity — search-to-result drop-off reduction</p>
+                </div>
+            </section>
+
+            <!-- Reflections -->
+            <section class="case-section reveal">
+                <h2 class="case-title">Key Learnings</h2>
+                <p class="case-text">
+                    Designing for complex B2B/B2C ecosystems taught me that UX designers must look beyond
+                    interface layouts. Understanding how APIs parse queries and how databases structure
+                    product relationships is critical. Designing a simple user journey requires aligning
+                    design decisions with technical constraints.
+                </p>
+                <ul class="case-list">
+                    <li><strong>Product Thinking:</strong> Designing for complex ecosystems, not just screens — solving behavioral problems, not just UI problems</li>
+                    <li><strong>Technical Understanding:</strong> User tracking via GA4, behavior insights via Clarity, basics of API network inspection and data flow</li>
+                    <li><strong>Collaboration:</strong> Stakeholder communication and translating business + tech constraints into design decisions</li>
+                    <li><strong>Asking the Right Questions:</strong> The biggest impact came from identifying that trust — not discoverability — was the real barrier</li>
+                </ul>
+            </section>
+
+        </div>
+        <!-- /project-body -->
+
+
+        <!-- ══ OTHER PROJECTS ════════════════════════════════════════ -->
+        <section class="other-projects-section">
+            <div class="container reveal">
+                <div class="section-header" style="margin-bottom:3rem;">
+                    <span class="section-label">Next Project</span>
+                    <h2 class="section-title" style="font-size:2.2rem;">Keep Exploring</h2>
+                </div>
+                <div class="works-grid" style="grid-template-columns:1fr;">
+                    <div class="project-card" style="flex-direction:row; align-items:center; min-height:180px;">
+                        <div class="project-content" style="padding:2.5rem;">
+                            <span class="project-meta">Next Case Study</span>
+                            <h3 class="project-title" style="margin:0.5rem 0;">Sahelo — Auto Parts E-Commerce</h3>
+                            <p class="project-desc">A complete UX redesign centered on structured discovery, navigation clarity, and delivery transparency.</p>
+                            <a href="sahelo.html" class="project-link" style="margin-top:1rem;">
+                                View Sahelo Project
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ══ FOOTER ════════════════════════════════════════════════════ -->
+    <footer>
+        <div class="container footer-content">
+            <p>© 2026 Deeksha Kashyap. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/deeksha-kashyap-ux" target="_blank" rel="noopener noreferrer" class="social-link">LinkedIn</a>
+                <a href="mailto:deekshakashyap224@gmail.com" class="social-link">Email</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Product portfolio of Deeksha Kashyap - UX/UI and Product Designer. Designing intuitive, scalable digital products that connect user needs with business goals.">
+    <title>Deeksha Kashyap | Product Designer Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        .project-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+    </style>
+</head>
+
+<body>
+    <!-- Custom Cursor Elements -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+
+    <!-- Navigation Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                deeksha.kashyap <span class="logo-dot"></span>
+            </a>
+            
+            <button class="hamburger" id="hamburger" aria-label="Toggle Navigation Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="index.html#projects" class="nav-link">Projects</a>
+                <a href="writings.html" class="nav-link">Writings</a>
+                <a href="resume.html" class="nav-link">Resume</a>
+            </nav>
+
+            <div class="nav-right">
+                <button class="theme-btn" id="theme-toggle" aria-label="Toggle Light/Dark Theme">
+                    <svg class="moon-icon" viewBox="0 0 24 24">
+                        <path d="M12 3c.132 0 .263 0 .393.007a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3zm0 2a7 7 0 1 0 5.25 11.625 9.5 9.5 0 0 1-5.18-7.79 9.516 9.516 0 0 1-.07-1.835A6.97 6.97 0 0 0 12 5z"/>
+                    </svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24">
+                        <path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.122 2.122-1.414 1.414-2.122-2.122zM19.07 3.515l1.414 1.414-2.122 2.121-1.414-1.414 2.122-2.121zM5.636 16.95l1.414 1.414-2.122 2.122-1.414-1.414 2.122-2.122zM1 11h3v2H1v-2zm19 0h3v2h-3v-2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-glow"></div>
+            <div class="container">
+                <div class="hero-content reveal">
+                    <div class="hero-badge">
+                        <span class="hero-badge-dot"></span>
+                        Available for Opportunities
+                    </div>
+                    <h1 class="hero-title">
+                        I craft intuitive, <span class="text-gradient">scalable</span> experiences that connect human behavior, user needs, and <span class="text-gradient">business goals</span>.
+                    </h1>
+                    <p class="hero-desc">
+                        Hi, I’m <strong>Deeksha Kashyap</strong>,a strategist focused on understanding how people think, decide, and interact with digital systems. By combining behavioral insights, UX strategy, and business thinking, I help organizations simplify complexity, improve user outcomes, and build experiences that deliver lasting value.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#projects" class="btn btn-primary">Explore My Work</a>
+                        <a href="about.html" class="btn btn-secondary">More About Me</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Selected Projects Section -->
+        <section id="projects" class="section">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Selected Works</span>
+                    <h2 class="section-title">Case Studies</h2>
+                    <p class="section-desc">Real-world design solutions showing end-to-end product design, user behavior tracking, and business impact metrics.</p>
+                </div>
+
+                <div class="works-grid">
+                    <!-- Project 1: Autolexica -->
+                    <div class="project-card reveal">
+                        <div class="project-img-wrapper">
+                            <div class="project-tags">
+                                <span class="project-tag">Automotive Tech</span>
+                                <span class="project-tag">Search & Validation</span>
+                            </div>
+                              <img src="../images/autolexica_hero_section.png" alt="test" style="width:100%; height:200px; display:center;">  <!-- ← ADDED -->               
+                             </div>
+                        <div class="project-content">
+                            <div class="project-meta">
+                                <span>UX/UI & Product Design</span>                                <span>12 Weeks</span>
+                            </div>
+                            <h3 class="project-title">Autolexica — Parts Discovery & Validation</h3>
+                            <p class="project-desc">Simplifying complex auto-parts search by reducing multi-platform dependency and enabling accurate vehicle-based validation (VIN, OEM, car model).</p>
+                            <a href="projects/autolexica.html" class="project-link">
+                                View Case Study
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Sahelo -->
+                    <div class="project-card reveal">
+                        <div class="project-img-wrapper">
+                            <div class="project-tags">
+                                <span class="project-tag">E-Commerce</span>
+                                <span class="project-tag">Automobile</span>
+                            </div>
+                            <img src="images/sahelo_hero_section.png" alt="Sahelo Project" class="project-img-wrapper img">  <!-- ← ADDED -->
+                        </div>
+                        <div class="project-content">
+                            <div class="project-meta">
+                                <span>UX/UI Redesign</span>
+                                <span>10 Weeks</span>
+                            </div>
+                            <h3 class="project-title">Sahelo — Automotive E-Commerce</h3>
+                            <p class="project-desc">A complete UX redesign centered on structured discovery, navigation clarity, and delivery transparency, resulting in a +22% increase in search interaction.</p>
+                            <a href="projects/sahelo.html" class="project-link">
+                                View Case Study
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- project 5: instagram case study ---->
+                     <div class="project-card reveal">
+                        <div class="project-img-wrapper">
+                            <div class="project-tags">
+                                <span class="project-tag">Social Media</span>
+                                <span class="project-tag">Business + User Value</span>
+                                <span class="project-tag">Mental Model Alignment</span>
+                            </div>
+                            <img src="images/insta_hero_section.png" alt="Instagram Case Study" class="project-img-wrapper img">  <!-- ← ADDED -->
+                        </div>
+                        <div class="project-content">
+                            <div class="project-meta">
+                                <span>UX Observation & Empathy</span>
+                                <span>4 Week</span>
+                            </div>
+                            <h3 class="project-title">Instagram Case Study</h3>
+                            <p class="project-desc">A study of physical supermarket shopping friction where positioning carts on upper floors changed behavior for 80% of customers.</p>
+                            <a href="projects/insta.html" class="project-link">
+                                View Case Study
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Internal Dashboard -->
+                    <div class="project-card reveal">
+                        <div class="project-img-wrapper">
+                            <div class="project-tags">
+                                <span class="project-tag">B2B SaaS</span>
+                                <span class="project-tag">Dashboard UX</span>
+                            </div>
+                           <img src="images/dashbord_hero_section.png" alt="Internal Dashboard Project" class="project-img-wrapper img">  <!-- ← ADDED -->
+                        </div>
+                        <div class="project-content">
+                            <div class="project-meta">
+                                <span>UX Optimization</span>
+                                <span>8 Weeks</span>
+                            </div>
+                            <h3 class="project-title">Data Dashboard UX Optimization</h3>
+                            <p class="project-desc">Standardizing UI patterns, simplifying heavy data layouts, and integrating invoice flows. Reduced core task completion times by 50%.</p>
+                            <a href="projects/dashboard.html" class="project-link">
+                                View Case Study
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 4: Retail observation -->
+                    <div class="project-card reveal">
+                        <div class="project-img-wrapper">
+                            <div class="project-tags">
+                                <span class="project-tag">UX Behavior</span>
+                                <span class="project-tag">Observational Study</span>
+                            </div>
+                            <img src="images/problem_hero_section.png" alt="Internal Dashboard Project" class="project-img-wrapper img">  <!-- ← ADDED -->
+                        </div>
+                        <div class="project-content">
+                            <div class="project-meta">
+                                <span>UX Observation & Empathy</span>
+                                <span>1 Week</span>
+                            </div>
+                            <h3 class="project-title">The Problem No One Noticed</h3>
+                            <p class="project-desc">A study of physical supermarket shopping friction where positioning carts on upper floors changed behavior for 80% of customers.</p>
+                            <a href="projects/retail-friction.html" class="project-link">
+                                View Case Study
+                                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Teaser Section -->
+        <section class="section" style="background-color: var(--bg-secondary);">
+            <div class="container">
+                <div class="about-teaser">
+                    <div class="about-teaser-img-wrapper reveal">
+                        <div class="teaser-ill">
+                            <div class="teaser-ill-circle">
+                                <span class="teaser-ill-node node-1"></span>
+                                <span class="teaser-ill-node node-2"></span>
+                                <span class="teaser-ill-node node-3"></span>
+                                <span class="teaser-ill-node node-4"></span>
+                            </div>
+                            <div class="teaser-ill-center">UX</div>
+                        </div>
+                    </div>
+                    <div class="about-teaser-content reveal">
+                        <span class="section-label">Design Philosophy</span>
+                        <h2 class="section-title">Beyond the Pixels</h2>
+                        <p class="section-desc">
+                            Design is more than aesthetic screens—it is a logical flow. I blend usability standards, behavioral psychology, and database diagnostics to design structured solutions that remove cognitive friction.
+                        </p>
+                        <blockquote class="about-teaser-quote">
+                            “If you think good design is expensive, you should look at the cost of bad design.”
+                            <span class="quote-author">Ralf Speth</span>
+                        </blockquote>
+                        <a href="about.html" class="btn btn-secondary" style="width:fit-content">My Approach & Background</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Selected Articles Section -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-label">Articles & Insights</span>
+                    <h2 class="section-title">Writings</h2>
+                    <p class="section-desc">Reflections on design methodologies, cognitive behavior, and lessons learned in product thinking.</p>
+                </div>
+
+                <div class="writings-list">
+                    <!-- Article 1 -->
+                    <a href="writings/rational-users.html" class="writing-card reveal">
+                        <div class="writing-info">
+                            <span class="writing-date">May 2026 • Behavioral Psychology</span>
+                            <h3 class="writing-title">We Design for Rational Users. But Rational Users Don't Exist.</h3>
+                            <p class="writing-desc">An exploration of how unconscious human biases, emotional triggers, and heuristic shortcuts define how people interact with interfaces.</p>
+                        </div>
+                        <div class="writing-arrow">
+                            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                        </div>
+                    </a>
+
+                    <!-- Article 2 -->
+                    <a href="writings/silent-reader.html" class="writing-card reveal">
+                        <div class="writing-info">
+                            <span class="writing-date">April 2026 • Storytelling</span>
+                            <h3 class="writing-title">From Silent Reader to Storyteller</h3>
+                            <p class="writing-desc">My perspective on why storytelling is the most critical tool for a product designer—communicating ideas, designs, and business value.</p>
+                        </div>
+                        <div class="writing-arrow">
+                            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg>
+                        </div>
+                    </a>
+                </div>
+
+                <div style="text-align:center;margin-top:3rem" class="reveal">
+                    <a href="writings.html" class="btn btn-secondary">See All Writings</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section" style="background-color: var(--bg-secondary);">
+            <div class="container">
+                <div class="contact-cta reveal">
+                    <h2 class="contact-cta-title">Let’s Build Something Meaningful</h2>
+                    <p class="contact-cta-desc">
+                        I’m always open to talking about complex product problems, B2B workflows, or product design collaborations. Let's get in touch.
+                    </p>
+                    <div class="email-copy-box">
+                        <span class="email-text" id="email-address">deekshakashyap224@gmail.com</span>
+                        <button class="copy-btn" id="copy-email-btn" aria-label="Copy email address to clipboard">
+                            <svg viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0z"/><path fill="currentColor" d="M16 2H8C6.9 2 6 2.9 6 4v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h8v12zm-3-17h-8c-1.1 0-2 .9-2 2v12h2V3h8V1z"/></svg>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p>© 2026 Deeksha Kashyap. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/deeksha-kashyap-ux" target="_blank" rel="noopener noreferrer" class="social-link">LinkedIn</a>
+                <a href="mailto:deekshakashyap224@gmail.com" class="social-link">Email</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
